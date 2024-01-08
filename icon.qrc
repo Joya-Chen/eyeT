@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>deepicon.png</file>
+        <file>deepLogo_s.png</file>
+        <file>deepicon.ico</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,14 @@
+# .gitignore
+
+# ignore release
+release/
+
+# ignore Python312
+Python312/
+
+# ignore .o
+*.Debug
+*.Release
+Makefile
+.qmake.stash
+*.exe
