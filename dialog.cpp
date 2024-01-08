@@ -13,6 +13,11 @@ Dialog::~Dialog()
     delete ui;
 }
 
+void Dialog::setVersion(QString version)
+{
+    ui->label->setText(version);
+}
+
 void Dialog::on_btn_ok_clicked()
 {
     QWidget::close();

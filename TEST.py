@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import requests
 import time
+
 def hello():
     print("hello world!")
     return
@@ -17,7 +18,7 @@ def upload(serverUrl,pwd,dataInfo,filePath,returnPath,time_out):
     now=time.ctime()
     my_data = {"DataGUID":pwd, "DataInfoNo":dataInfo,"ClientTime":now}
     url = serverUrl
-    f=open(filePath,'rb')
+    f=open(filePath.decode('utf8'),'rb')
     files = {'file':f}
     rText=""
     try:
@@ -39,7 +40,7 @@ def upload(serverUrl,pwd,dataInfo,filePath,returnPath,time_out):
            rText = "OOps: Something Else "+str(erre)
     finally:
            f.close()
-           path = returnPath
+           path = returnPath.decode('utf8')
            f=open(path,'w')
            f.write(str(rText))
            f.close()

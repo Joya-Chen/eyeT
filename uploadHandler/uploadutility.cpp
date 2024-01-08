@@ -79,8 +79,8 @@ QString uploadUtility::upload(const QString filepath, const QString outPath)
     PyObject*  arg  = PyBytes_FromString(url.toLatin1().data());
     PyObject*  arg1  = PyBytes_FromString(pwd.toLatin1().data());
     PyObject*  arg2  = PyBytes_FromString(dataInfo.toLatin1().data());
-    PyObject*  arg3 = PyBytes_FromString(filepath.toLatin1().data());
-    PyObject*  arg4 = PyBytes_FromString(outPath.toLatin1().data());
+    PyObject*  arg3 = PyBytes_FromString(filepath.toUtf8().data());
+    PyObject*  arg4 = PyBytes_FromString(outPath.toUtf8().data());
     PyObject*  arg5 = PyLong_FromLong(timeout);
 
     PyObject*  args = PyTuple_New(6);

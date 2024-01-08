@@ -52,7 +52,7 @@
     <pixmap resource="icon.qrc">:/deepLogo_s.png</pixmap>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="label_version">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -62,7 +62,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>eyaAnalysis version 2024.01.03.7</string>
+    <string/>
    </property>
   </widget>
  </widget>

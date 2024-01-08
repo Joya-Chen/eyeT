@@ -19,9 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->loadConfigAndSet();
 
-    this->initialElementState();
+     m_version = "v2014.01.09.8";
 
-    m_version = "2014.01.03.7";
+    this->initialElementState();
 
     recordingType = false;
 
@@ -550,6 +550,8 @@ void MainWindow::initialElementState(){
 
     ui->btn_tester_finish->setEnabled(false);
 
+    ui->label_version->setText(this->getVersion());
+
 }
 
 void MainWindow::setConfig(){
@@ -1046,12 +1048,22 @@ void MainWindow::on_btnVideoSelUpload_clicked()
         progressDialog.setWindowModality(Qt::ApplicationModal);
         progressDialog.show();
         // 開始處理任務
-        QString path = fileName;
-        QString oPath = QString("%1/ex%2").arg(base.path()).arg(base.fileName());
-        this->doExVideo(2,path,oPath);
+        QString path, oPath;
+        if(base.fileName().contains("ex"))
+        {
+            path = fileName;
+            oPath = fileName;
+        }
+        else{
+            path = fileName;
+            oPath = QString("%1/ex%2").arg(base.path()).arg(base.fileName());
+            this->doExVideo(2,path,oPath);
+        }
+
+
         ui->txtShow->appendPlainText(tr("測試上傳%1,回傳文件%2\n開始上傳...").arg(oPath).arg(QString("%1/%2").arg(base.path()).arg("out.txt")));
 
-        QString result = m_upload.uploadVideo(oPath,QString("%1/%2").arg(m_testerData.m_testerPath).arg("out.txt"));
+        QString result = m_upload.uploadVideo(oPath,QString("%1/%2").arg(base.path()).arg("out.txt"));
 
         //
 
@@ -1149,6 +1161,7 @@ void MainWindow::on_btn_tester_finish_clicked()
 void MainWindow::on_action_about_triggered()
 {
     //  this->ui_aboutDialog->setWindowFlags(Qt::WindowCloseButtonHint);
+    this->ui_aboutDialog->setVersion(QString("eyeAnalysis version %1").arg(this->getVersion()));
     this->ui_aboutDialog->show();
 
 }

@@ -85,7 +85,7 @@ public:
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_logo;
-    QLabel *label_4;
+    QLabel *label_version;
     QPushButton *btnCameraStart;
     QPushButton *btnCameraStop;
     QPushButton *btnVideoSeltoNolight;
@@ -405,8 +405,8 @@ public:
 
         horizontalLayout_2->addWidget(label_logo);
 
-        label_4 = new QLabel(centralWidget);
-        label_4->setObjectName(QStringLiteral("label_4"));
+        label_version = new QLabel(centralWidget);
+        label_version->setObjectName(QStringLiteral("label_version"));
         QPalette palette;
         QBrush brush(QColor(90, 90, 90, 255));
         brush.setStyle(Qt::SolidPattern);
@@ -415,17 +415,17 @@ public:
         QBrush brush1(QColor(120, 120, 120, 255));
         brush1.setStyle(Qt::SolidPattern);
         palette.setBrush(QPalette::Disabled, QPalette::Text, brush1);
-        label_4->setPalette(palette);
+        label_version->setPalette(palette);
         QFont font7;
         font7.setFamily(QStringLiteral("Arial"));
         font7.setPointSize(9);
         font7.setBold(true);
         font7.setItalic(true);
         font7.setWeight(75);
-        label_4->setFont(font7);
-        label_4->setAlignment(Qt::AlignCenter);
+        label_version->setFont(font7);
+        label_version->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_2->addWidget(label_4);
+        horizontalLayout_2->addWidget(label_version);
 
         btnCameraStart = new QPushButton(centralWidget);
         btnCameraStart->setObjectName(QStringLiteral("btnCameraStart"));
@@ -474,7 +474,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1136, 23));
+        menuBar->setGeometry(QRect(0, 0, 1136, 28));
         menuBar->setFont(font6);
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
@@ -540,7 +540,7 @@ public:
         btnOpenFolder->setText(QApplication::translate("MainWindow", "\351\226\213\345\225\237\350\263\207\346\226\231\345\244\276", Q_NULLPTR));
         btnVideoSelUpload->setText(QApplication::translate("MainWindow", "\351\201\270\346\223\207\346\252\224\346\241\210\344\270\212\345\202\263", Q_NULLPTR));
         label_logo->setText(QString());
-        label_4->setText(QApplication::translate("MainWindow", "V2024.01.03.7", Q_NULLPTR));
+        label_version->setText(QApplication::translate("MainWindow", "V2024.01.03.7", Q_NULLPTR));
         btnCameraStart->setText(QApplication::translate("MainWindow", "\351\226\213\345\247\213\346\223\267\345\217\226\345\275\261\345\203\217", Q_NULLPTR));
         btnCameraStop->setText(QApplication::translate("MainWindow", "camera stop", Q_NULLPTR));
         btnVideoSeltoNolight->setText(QApplication::translate("MainWindow", "\351\201\270\345\217\226\346\252\224\346\241\210\345\216\273\351\231\244\344\272\256\351\273\236", Q_NULLPTR));

@@ -25,7 +25,7 @@ class Ui_Dialog
 public:
     QPushButton *btn_ok;
     QLabel *label;
-    QLabel *label_2;
+    QLabel *label_version;
 
     void setupUi(QDialog *Dialog)
     {
@@ -45,9 +45,9 @@ public:
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(10, 20, 311, 51));
         label->setPixmap(QPixmap(QString::fromUtf8(":/deepLogo_s.png")));
-        label_2 = new QLabel(Dialog);
-        label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(20, 90, 391, 111));
+        label_version = new QLabel(Dialog);
+        label_version->setObjectName(QStringLiteral("label_version"));
+        label_version->setGeometry(QRect(20, 90, 391, 111));
 
         retranslateUi(Dialog);
 
@@ -59,7 +59,7 @@ public:
         Dialog->setWindowTitle(QApplication::translate("Dialog", "\351\227\234\346\226\274eyeAnalysis", Q_NULLPTR));
         btn_ok->setText(QApplication::translate("Dialog", "OK", Q_NULLPTR));
         label->setText(QString());
-        label_2->setText(QApplication::translate("Dialog", "eyaAnalysis version 2024.01.03.7", Q_NULLPTR));
+        label_version->setText(QString());
     } // retranslateUi
 
 };
