@@ -62,8 +62,10 @@ LIBS += C:\opencv\opencv-build\bin\libopencv_core481.dll
 LIBS += C:\opencv\opencv-build\bin\libopencv_calib3d481.dll
 
 
-INCLUDEPATH += $$PWD/../../../../AppData/Local/Programs/Python/Python312-32/include
-LIBS += -L$$PWD/../../../../AppData/Local/Programs/Python/Python312-32/libs/ -lpython312
+#INCLUDEPATH += $$PWD/../../../../AppData/Local/Programs/Python/Python312-32/include
+#LIBS += -L$$PWD/../../../../AppData/Local/Programs/Python/Python312-32/libs/ -lpython312
+INCLUDEPATH += C:\Users\DeepObverse\AppData\Local\Programs\Python\Python312-32\include
+LIBS += -LC:\Users\DeepObverse\AppData\Local\Programs\Python\Python312-32\libs\ -lpython312
 
 DISTFILES += \
     release/TEST.py \

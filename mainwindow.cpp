@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->initialElementState();
 
+    m_version = "2014.01.03.7";
+
     recordingType = false;
 
     m_countdown = recordTime;
@@ -135,6 +137,11 @@ bool MainWindow::doExVideo(int bitrate_M,QString vPath, QString &oPath)
     }
 
     this->updateBitrate(bitrate_M, vPath, oPath);
+}
+
+QString MainWindow::getVersion()
+{
+    return m_version;
 }
 
 void MainWindow::processFrameAndUpdateGUI()

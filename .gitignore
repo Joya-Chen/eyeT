@@ -12,3 +12,4 @@ Python312/
 Makefile
 .qmake.stash
 *.exe
+*.ini

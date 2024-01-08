@@ -75,6 +75,7 @@ public:
     bool openCamera(int cameraIndex);
     void detectCamera();
     bool doExVideo(int bitrate_M,QString vPath, QString &oPath);
+    QString getVersion();
 
 private:
     Ui::MainWindow *ui;
@@ -109,6 +110,7 @@ private:
 
     int detectCameraCount();
     const int recordTime = 30;
+    QString m_version ;
 
     void loadConfigAndSet();
     void initialElementState();
