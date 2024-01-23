@@ -13,3 +13,4 @@ Makefile
 .qmake.stash
 *.exe
 *.ini
+log.txt

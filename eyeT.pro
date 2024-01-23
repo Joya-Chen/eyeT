@@ -6,7 +6,7 @@
 
 QT       += core gui multimedia multimediawidgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets axcontainer
 
 TARGET = eyeAnalysis
 TEMPLATE = app
@@ -30,18 +30,21 @@ SOURCES += main.cpp\
     uploadHandler/uploadutility.cpp \
     handler/uploadhandler.cpp \
     dialog.cpp \
-    settingform.cpp
+    settingform.cpp \
+    videoparam.cpp
 
 HEADERS  += mainwindow.h \
     frameHandler/frameutility.h \
     uploadHandler/uploadutility.h \
     handler/uploadhandler.h \
     dialog.h \
-    settingform.h
+    settingform.h \
+    videoparam.h
 
 FORMS    += mainwindow.ui \
     dialog.ui \
-    settingform.ui
+    settingform.ui \
+    videoparam.ui
 
 INCLUDEPATH += C:\opencv\build\include
 LIBS += C:\opencv\opencv-build\bin\opencv_videoio_ffmpeg481.dll
@@ -69,7 +72,8 @@ LIBS += -LC:\Users\DeepObverse\AppData\Local\Programs\Python\Python312-32\libs\ 
 
 DISTFILES += \
     release/TEST.py \
-    release/TEST_2param.py
+    release/TEST_2param.py \
+    release/ROI.py
 
 RESOURCES += \
     icon.qrc

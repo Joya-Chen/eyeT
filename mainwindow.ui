@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1136</width>
-    <height>914</height>
+    <height>923</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -15,6 +15,11 @@
     <width>0</width>
     <height>0</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>微軟正黑體</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>EyeAnalysis</string>
@@ -725,6 +730,21 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="btnROINUpload">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>ROI提取並上傳</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -772,7 +792,13 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="font">
      <font>
@@ -781,8 +807,9 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="title">
-     <string>回傳</string>
+     <string>影片格式</string>
     </property>
+    <addaction name="actio_video_set"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="font">
@@ -861,6 +888,14 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="action_upload_set">
+   <property name="text">
+    <string>設定</string>
+   </property>
+  </action>
+  <action name="actio_video_set">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>設定</string>
    </property>

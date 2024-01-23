@@ -167,7 +167,7 @@ QString uploadUtility::parseResult(QString src)
                     QString bpm = info_Obj.value("bpm").toString();
                     QString bpv0 = info_Obj.value("bpv0").toString();
                     QString bpv1 = info_Obj.value("bpv1").toString();
-                    QString glu = info_Obj.value("glu").toString();
+                    QString glu = info_Obj.value("glu").toString().remove("[").remove("]");
 
                     qDebug()<<"000";
                     QString result,returnTxt;
@@ -182,12 +182,12 @@ QString uploadUtility::parseResult(QString src)
 
                     returnTxt = QString("%1\n%2\n%3\n%4\n%5\n%6\n%7\n%8\n%9")
                                                 .arg(QString::fromUtf8("分析結果:")+ result)
-                                                .arg(QString::fromUtf8("乳酸值:") + LTv)
-                                                .arg(QString::fromUtf8("血氧值:") + S2)
+                                                .arg(QString::fromUtf8("血氧值:") + S2.replace("[","").replace("]",""))
                                                 .arg(QString::fromUtf8("心跳:") + bpm)
+                                                .arg(QString::fromUtf8("乳酸值:") + LTv)
                                                 .arg(QString::fromUtf8("舒張壓:" )+ bpv0)
                                                 .arg(QString::fromUtf8("收縮壓:") + bpv1)
-                                                .arg(QString::fromUtf8("血糖值:") + glu);
+                                                .arg(QString::fromUtf8("血糖值:") + glu.replace("[","").replace("]",""));
 
 
 
@@ -226,12 +226,12 @@ QString uploadUtility::parseResult(QString src)
 
             returnTxt = QString("%1\n%2\n%3\n%4\n%5\n%6\n%7\n")
                                         .arg(QString::fromUtf8("分析結果:")+ result)
-                                        .arg(QString::fromUtf8("乳酸值:") + LTv)
-                                        .arg(QString::fromUtf8("血氧值:") + S2)
+                                        .arg(QString::fromUtf8("血氧值:") + S2.replace("[","").replace("]",""))
                                         .arg(QString::fromUtf8("心跳:") + bpm)
+                                        .arg(QString::fromUtf8("乳酸值:") + LTv)
                                         .arg(QString::fromUtf8("舒張壓:" )+ bpv0)
                                         .arg(QString::fromUtf8("收縮壓:") + bpv1)
-                                        .arg(QString::fromUtf8("血糖值:") + glu);
+                                        .arg(QString::fromUtf8("血糖值:") + glu.replace("[","").replace("]",""));
 
             qDebug() <<returnTxt ;
 

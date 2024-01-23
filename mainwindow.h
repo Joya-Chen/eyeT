@@ -24,6 +24,7 @@
 #include <QTimer>
 #include "dialog.h"
 #include "settingform.h"
+#include "videoparam.h"
 #define eye_source_xml_addr "haarcascade_eye.xml"
 using namespace cv;
 
@@ -55,6 +56,31 @@ public:
     bool m_txtLeftFinished;
 
 };
+class EYEData
+{
+public:
+    /*
+     * videoPath
+     * outputTxtPath
+     * Situation  //0 失敗 / 1 成功
+     * S2
+       bpm
+       LTv
+       bpv0
+       bpv1
+       glu
+     */
+    QString videoPath;
+    QString outputTxtPath;
+    QString Situation;
+    QString S2;
+    QString bpm;
+    QString LTv;
+    QString bpv0;
+    QString bpv1;
+    QString glu;
+
+};
 namespace Ui {
 class MainWindow;
 }
@@ -81,6 +107,7 @@ private:
     Ui::MainWindow *ui;
     Dialog *ui_aboutDialog;
     SettingForm *ui_settingForm;
+    videoParam *ui_videoParam;
     QCameraViewfinder *m_viewfindR,*m_viewfindL ;
     QVBoxLayout *m_layoutR;
     VideoCapture cap_Beam_Cam ; //攝影機
@@ -124,6 +151,7 @@ private:
 
     int deleteFile(QString filePath);
     void updateBitrate(int bitrate_M,QString vPath, QString &oPath);
+    bool addToExcel(QList<EYEData> data);
 signals:
     void uploadVideoFile(QString vPath, QString oPath);
 
@@ -155,6 +183,8 @@ private slots:
     void on_btn_tester_finish_clicked();
     void on_action_about_triggered();
     void on_action_upload_set_triggered();
+    void on_actio_video_set_triggered();
+    void on_btnROINUpload_clicked();
 };
 
 #endif // MAINWINDOW_H

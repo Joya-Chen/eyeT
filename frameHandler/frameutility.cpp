@@ -55,7 +55,7 @@ void frameUtility::eyeAlign(QString srcPath)
     }
     qDebug()<<"frame depth:"<<frame.depth()<<",channal:"<<frame.channels();
 
-    Mat frame_gray,frame_gaussian, frame_canny, frame_edges; ;
+    Mat frame_gray,frame_gaussian, frame_canny, frame_edges, frame_cut;
 
     cvtColor(frame,frame_gray,COLOR_BGR2GRAY);
 

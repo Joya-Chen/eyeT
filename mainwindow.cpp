@@ -6,7 +6,7 @@
 #include <QProgressDialog>
 #include <QSettings>
 #include <QProcess>
-
+#include <QAxObject>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -17,9 +17,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui_settingForm = new SettingForm(this);
 
+    ui_videoParam = new videoParam(this);
+
     this->loadConfigAndSet();
 
-     m_version = "v2014.01.09.8";
+    m_version = "v2024.01.23.10";
 
     this->initialElementState();
 
@@ -49,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui_settingForm,SIGNAL(paramUpdate(QString,QString,QString,int)),this,SLOT(updateSettingParam(QString,QString,QString,int)));
 
+    this->startUploadThread();
 
     this->detectCamera();
 
@@ -367,7 +370,7 @@ void MainWindow::saveLVideoEnd()
 
     QString returnText = m_upload.uploadVideo(oPath,QString("%1/%2").arg(m_testerData.m_testerPath).arg("left.txt"));
 
-  /*
+    /*
     QEventLoop m_loop;
 
     QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
@@ -506,13 +509,13 @@ void MainWindow::initialElementState(){
 
     ui->btnCameraStop->setEnabled(true);
 
-    ui->btnVideoSeltoCanny->setHidden(true);
+    ui->btnVideoSeltoCanny->setEnabled(true);
 
-    ui->btnVideoSeltoNolight->setHidden(true);
+    ui->btnVideoSeltoNolight->setEnabled(true);
 
-    ui->btnVideoSetting->setHidden(true);
+    ui->btnVideoSetting->setEnabled(true);
 
-    ui->btnVideoSelUpload->setHidden(true);
+    ui->btnVideoSelUpload->setEnabled(true);
 #else
     ui->btnCameraStart->setHidden(true);
 
@@ -796,7 +799,7 @@ void MainWindow::updateBitrate(int bitrate_M,QString vPath, QString &oPath)
     //ffmpeg -i "D:\API\video\6\right.mp4" -c:v mpeg4 -c:a aac -b:v 2M -b:a 256k "D:\API\video\6\right_6.mp4"
     //QString program = "ffmpeg";
 
-    //QString cmd = QString("ffmpeg -i \"%1\" -c:v mpeg4 -c:a aac -b:v 2M -b:a 256k \"%2\"").arg(vPath).arg(oPath);   
+    //QString cmd = QString("ffmpeg -i \"%1\" -c:v mpeg4 -c:a aac -b:v 2M -b:a 256k \"%2\"").arg(vPath).arg(oPath);
 
     QString program = QDir::currentPath().append("/ffmpeg.exe");
 
@@ -818,6 +821,201 @@ void MainWindow::updateBitrate(int bitrate_M,QString vPath, QString &oPath)
     ui->txtShow->appendPlainText(process->errorString());
 #endif
 
+}
+bool MainWindow::addToExcel(QList<EYEData> data)
+{
+    qDebug()<<"MainWindow::addToExcel";
+
+    QString filepath = QDir::currentPath().append("\\EYEAutoGenData.xlsx");
+    QFile file(filepath);
+    if(!file.exists())
+    {
+        qDebug()<<"xlsx not exist, need to create !" ;
+        QAxObject *excel = new QAxObject(this);
+        excel->setControl("Excel.Application");//连接Excel控件
+        excel->dynamicCall("SetVisible (bool Visible)","false");//不显示窗体
+        excel->setProperty("DisplayAlerts", false);//不显示任何警告信息。如果为true那么在关闭是会出现类似“文件已修改，是否保存”的提示
+        QAxObject *workbooks = excel->querySubObject("WorkBooks");//获取工作簿集合
+
+        workbooks->dynamicCall("Add");//新建一个工作簿
+        QAxObject *workbook = excel->querySubObject("ActiveWorkBook");//获取当前工作簿
+        QAxObject *worksheets = workbook->querySubObject("Sheets");//获取工作表集合
+        QAxObject *worksheet = worksheets->querySubObject("Item(int)",1);//获取工作表集合的工作表1，即sheet1
+
+
+        QAxObject *cellA,*cellB,*cellC,*cellD,*cellE,*cellF,*cellG,*cellH,*cellI;
+
+        //设置标题
+        int cellrow=1;
+        QString A="A"+QString::number(cellrow);//设置要操作的单元格，如A1
+        QString B="B"+QString::number(cellrow);
+        QString C="C"+QString::number(cellrow);
+        QString D="D"+QString::number(cellrow);
+        QString E="E"+QString::number(cellrow);
+        QString F="F"+QString::number(cellrow);
+        QString G="G"+QString::number(cellrow);
+        QString H="H"+QString::number(cellrow);
+        QString I="I"+QString::number(cellrow);
+        //获取单元格
+        cellA = worksheet->querySubObject("Range(QVariant, QVariant)",A);
+        cellB = worksheet->querySubObject("Range(QVariant, QVariant)",B);
+        cellC = worksheet->querySubObject("Range(QVariant, QVariant)",C);
+        cellD = worksheet->querySubObject("Range(QVariant, QVariant)",D);
+        cellE = worksheet->querySubObject("Range(QVariant, QVariant)",E);
+        cellF = worksheet->querySubObject("Range(QVariant, QVariant)",F);
+        cellG = worksheet->querySubObject("Range(QVariant, QVariant)",G);
+        cellH = worksheet->querySubObject("Range(QVariant, QVariant)",H);
+        cellI = worksheet->querySubObject("Range(QVariant, QVariant)",I);
+        //设置单元格的值
+        qDebug()<<"填入標題列";
+        cellA->dynamicCall("SetValue(const QVariant&)",QVariant("影片路徑"));
+        cellB->dynamicCall("SetValue(const QVariant&)",QVariant("文件路徑"));
+        cellC->dynamicCall("SetValue(const QVariant&)",QVariant("結果"));
+        cellD->dynamicCall("SetValue(const QVariant&)",QVariant("血氧"));
+        cellE->dynamicCall("SetValue(const QVariant&)",QVariant("心跳"));
+        cellF->dynamicCall("SetValue(const QVariant&)",QVariant("乳酸"));
+        cellG->dynamicCall("SetValue(const QVariant&)",QVariant("舒張壓"));
+        cellH->dynamicCall("SetValue(const QVariant&)",QVariant("收縮壓"));
+        cellI->dynamicCall("SetValue(const QVariant&)",QVariant("血糖Glu"));
+
+        cellrow++;
+
+        int rows=data.size();
+
+        qDebug()<<"資料列數"<<rows;;
+        for(int i=0;i<rows;i++){
+            qDebug()<<"填入列"<<i;
+            QString A="A"+QString::number(cellrow);//设置要操作的单元格，如A1
+            QString B="B"+QString::number(cellrow);
+            QString C="C"+QString::number(cellrow);
+            QString D="D"+QString::number(cellrow);
+            QString E="E"+QString::number(cellrow);
+            QString F="F"+QString::number(cellrow);
+            QString G="G"+QString::number(cellrow);
+            QString H="H"+QString::number(cellrow);
+            QString I="I"+QString::number(cellrow);
+
+            cellA = worksheet->querySubObject("Range(QVariant, QVariant)",A);
+            cellB = worksheet->querySubObject("Range(QVariant, QVariant)",B);
+            cellC = worksheet->querySubObject("Range(QVariant, QVariant)",C);
+            cellD = worksheet->querySubObject("Range(QVariant, QVariant)",D);
+            cellE = worksheet->querySubObject("Range(QVariant, QVariant)",E);
+            cellF = worksheet->querySubObject("Range(QVariant, QVariant)",F);
+            cellG = worksheet->querySubObject("Range(QVariant, QVariant)",G);
+            cellH = worksheet->querySubObject("Range(QVariant, QVariant)",H);
+            cellI = worksheet->querySubObject("Range(QVariant, QVariant)",I);
+
+            qDebug()<<data.at(i).videoPath;
+            qDebug()<<data.at(i).outputTxtPath;
+            qDebug()<<data.at(i).Situation;
+            qDebug()<<data.at(i).S2;
+            qDebug()<<data.at(i).bpm;
+            qDebug()<<data.at(i).LTv;
+            qDebug()<<data.at(i).bpv0;
+            qDebug()<<data.at(i).bpv1;
+            qDebug()<<data.at(i).glu;
+
+            cellA->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(i).videoPath));//设置单元格的值
+            cellB->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(i).outputTxtPath));
+            cellC->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(i).Situation));
+            cellD->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(i).S2));//设置单元格的值
+            cellE->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(i).bpm));
+            cellF->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(i).LTv));
+            cellG->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(i).bpv0));//设置单元格的值
+            cellH->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(i).bpv1));
+            cellI->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(i).glu));
+
+            cellrow++;
+        }
+        qDebug()<<"SaveAs(const QString&):"<<filepath;
+        workbook->dynamicCall("SaveAs(const QString&)",QDir::toNativeSeparators(filepath));//保存至filepath，注意一定要用QDir::toNativeSeparators将路径中的"/"转换为"\"，不然一定保存不了。
+        qDebug()<<"Close()";
+        workbook->dynamicCall("Close()");//关闭工作簿
+        qDebug()<<"Quit()";
+        excel->dynamicCall("Quit()");//关闭excel
+        if(excel)
+        {
+            qDebug()<<"delete excel" ;
+            delete excel;
+            excel=NULL;
+        }
+    }else
+    {
+        //QAxObject *cell = worksheet->querySubObject("Cells(int, int)", row, column);
+        //QVariant value = cell->property("Value");
+        qDebug()<<"excle is exist, read it.";
+        QAxObject *excel = new QAxObject(this);
+        excel->setControl("Excel.Application");//连接Excel控件
+        excel->dynamicCall("SetVisible (bool Visible)","false");//不显示窗体
+        excel->setProperty("DisplayAlerts", false);//不显示任何警告信息。如果为true那么在关闭是会出现类似“文件已修改，是否保存”的提示
+        QAxObject *workbooks = excel->querySubObject("WorkBooks");//获取工作簿集合
+        QAxObject *workbook = workbooks->querySubObject("Open(QString&)",filepath);
+
+        QAxObject *worksheets = workbook->querySubObject("WorkSheets");//获取工作表集合
+
+        QAxObject *worksheet = worksheets->querySubObject("Item(int)",1);//获取工作表集合的工作表1，即sheet1
+        QAxObject *usedRange = worksheet->querySubObject("UsedRange");
+        //取得行數
+        QAxObject *rows = usedRange->querySubObject("Rows");
+        int iRows = rows->property("Count").toInt();
+        qDebug()<<"資料列共"<<iRows;
+        int cellrow = iRows + 1 ;
+        qDebug()<<"填入列"<<cellrow;
+        QString A="A"+QString::number(cellrow);//设置要操作的单元格，如A1
+        QString B="B"+QString::number(cellrow);
+        QString C="C"+QString::number(cellrow);
+        QString D="D"+QString::number(cellrow);
+        QString E="E"+QString::number(cellrow);
+        QString F="F"+QString::number(cellrow);
+        QString G="G"+QString::number(cellrow);
+        QString H="H"+QString::number(cellrow);
+        QString I="I"+QString::number(cellrow);
+
+        QAxObject *cellA,*cellB,*cellC,*cellD,*cellE,*cellF,*cellG,*cellH,*cellI;
+
+        cellA = worksheet->querySubObject("Range(QVariant, QVariant)",A);
+        cellB = worksheet->querySubObject("Range(QVariant, QVariant)",B);
+        cellC = worksheet->querySubObject("Range(QVariant, QVariant)",C);
+        cellD = worksheet->querySubObject("Range(QVariant, QVariant)",D);
+        cellE = worksheet->querySubObject("Range(QVariant, QVariant)",E);
+        cellF = worksheet->querySubObject("Range(QVariant, QVariant)",F);
+        cellG = worksheet->querySubObject("Range(QVariant, QVariant)",G);
+        cellH = worksheet->querySubObject("Range(QVariant, QVariant)",H);
+        cellI = worksheet->querySubObject("Range(QVariant, QVariant)",I);
+        qDebug()<<data.at(0).videoPath;
+        qDebug()<<data.at(0).outputTxtPath;
+        qDebug()<<data.at(0).Situation;
+        qDebug()<<data.at(0).S2;
+        qDebug()<<data.at(0).bpm;
+        qDebug()<<data.at(0).LTv;
+        qDebug()<<data.at(0).bpv0;
+        qDebug()<<data.at(0).bpv1;
+        qDebug()<<data.at(0).glu;
+        cellA->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(0).videoPath));//设置单元格的值
+        cellB->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(0).outputTxtPath));
+        cellC->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(0).Situation));
+        cellD->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(0).S2));//设置单元格的值
+        cellE->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(0).bpm));
+        cellF->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(0).LTv));
+        cellG->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(0).bpv0));//设置单元格的值
+        cellH->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(0).bpv1));
+        cellI->dynamicCall("SetValue(const QVariant&)",QVariant(data.at(0).glu));
+        qDebug()<<"Save()";
+        workbook->dynamicCall("Save()");
+        qDebug()<<"Close()";
+        workbook->dynamicCall("Close()");//关闭工作簿
+        qDebug()<<"Quit()";
+        excel->dynamicCall("Quit()");//关闭excel
+        if(excel)
+        {
+            qDebug()<<"delete excel";
+            delete excel;
+            excel=NULL;
+        }
+    }
+
+
+    return true;
 }
 
 void MainWindow::on_comboBox_camList_currentIndexChanged(int index)
@@ -1060,30 +1258,62 @@ void MainWindow::on_btnVideoSelUpload_clicked()
             this->doExVideo(2,path,oPath);
         }
 
+        QFileInfo videoBase(oPath);
 
-        ui->txtShow->appendPlainText(tr("測試上傳%1,回傳文件%2\n開始上傳...").arg(oPath).arg(QString("%1/%2").arg(base.path()).arg("out.txt")));
+        QString outTxtPath = QString("%1/%2_%3").arg(base.path()).arg(videoBase.baseName()).arg("out.txt");
 
-        QString result = m_upload.uploadVideo(oPath,QString("%1/%2").arg(base.path()).arg("out.txt"));
+        ui->txtShow->appendPlainText(tr("測試上傳%1,回傳文件%2\n開始上傳...").arg(oPath).arg(outTxtPath));
 
-        //
+        QString result = m_upload.uploadVideo(oPath,outTxtPath);
 
-        /*
+
+/*
         QEventLoop m_loop;
 
         QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
         ///
-        emit uploadVideoFile(fileName,QString("%1/%2").arg(base.path()).arg("out.txt"));
+        emit uploadVideoFile(oPath,outTxtPath);
 
         m_loop.exec();
 
         qDebug()<<"finish";
 
         QString result = m_uploadThread->getReturnText();
-        */
+*/
         // 關閉處理中畫面
         progressDialog.close();
 
         ui->txtShow->appendPlainText(QString("上傳完畢\n結果:\n" + result));
+
+        QList<EYEData> eyedataList ;
+        EYEData data;
+        data.videoPath = oPath;
+        data.outputTxtPath = outTxtPath;
+        QStringList dataList = result.trimmed().split("\n");
+        qDebug()<<"dataList:"<<dataList;
+        QStringList valueList;
+        foreach(QString item, dataList) {
+            QStringList pair = item.split(":");
+
+            valueList.append(pair[1]);
+
+            // 在這裡可以使用 key 和 value 來進行相應的處理
+        }
+
+        data.Situation = valueList.at(0);
+        data.S2 = valueList.at(1);
+        data.bpm = valueList.at(2);
+        data.LTv = valueList.at(3);
+        data.bpv0 = valueList.at(4);
+        data.bpv1 = valueList.at(5);
+        data.glu = valueList.at(6);
+        qDebug()<<"valueList:"<<valueList;
+        eyedataList.append(data);
+
+
+        this->addToExcel(eyedataList);
+
+        ui->txtShow->appendPlainText(QString("自動轉存excel done\n"));
 
         QMessageBox::information(this,tr("Info"),tr("影片已上傳"),QMessageBox::Ok);
     }
@@ -1169,4 +1399,25 @@ void MainWindow::on_action_about_triggered()
 void MainWindow::on_action_upload_set_triggered()
 {
     this->ui_settingForm->show();
+}
+
+void MainWindow::on_actio_video_set_triggered()
+{
+    this->ui_videoParam->show();
+}
+
+void MainWindow::on_btnROINUpload_clicked()
+{
+    //check ROI x,y,width,height
+    //
+
+    QString fileName = QFileDialog::getOpenFileName(this, tr("選擇影片檔"), "", tr("所有文件 (*.*)"));
+
+    if (!fileName.isEmpty()) {
+        // 選擇了文件，可以進行相應的操作
+
+        QFileInfo base(fileName);
+
+        qDebug()<< "filePath:"<<fileName <<"dir:"<<base.path()<<"fileName"<<base.fileName();
+    }
 }

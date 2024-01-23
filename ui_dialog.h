@@ -40,7 +40,7 @@ public:
         Dialog->setContextMenuPolicy(Qt::DefaultContextMenu);
         btn_ok = new QPushButton(Dialog);
         btn_ok->setObjectName(QStringLiteral("btn_ok"));
-        btn_ok->setGeometry(QRect(340, 240, 80, 20));
+        btn_ok->setGeometry(QRect(340, 219, 80, 41));
         label = new QLabel(Dialog);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(10, 20, 311, 51));
