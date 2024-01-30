@@ -23,7 +23,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="groupBox_format">
      <property name="title">
       <string>影片格式</string>
      </property>
@@ -32,6 +32,9 @@
        <widget class="QRadioButton" name="radio_avi">
         <property name="text">
          <string>avi</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -46,36 +49,92 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBox_expose">
      <property name="title">
-      <string>Biterate</string>
+      <string>曝光度</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
+       <widget class="QRadioButton" name="radio_expose_auto">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>AUTO</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radio_expose_4">
+        <property name="text">
+         <string>-4</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radio_expose_5">
+        <property name="text">
+         <string>-5</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radio_expose_6">
+        <property name="text">
+         <string>-6</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_exposeValue">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_biterate">
+     <property name="title">
+      <string>Biterate（ＭＢ）</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QRadioButton" name="radioButton_3">
+       <widget class="QRadioButton" name="radio_bitra_auto">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
-         <string>不限制</string>
+         <string>AUTO</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_4">
+       <widget class="QRadioButton" name="radio_bitra_2M">
         <property name="text">
-         <string>2M</string>
+         <string>2</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_5">
+       <widget class="QRadioButton" name="radio_bitra_3M">
         <property name="text">
-         <string>3M</string>
+         <string>3</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_6">
+       <widget class="QRadioButton" name="radio_bitra_4M">
         <property name="text">
-         <string>4M</string>
+         <string>4</string>
         </property>
        </widget>
       </item>
@@ -89,16 +148,16 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QRadioButton" name="radio_roi_crop">
         <property name="text">
-         <string>不提取</string>
+         <string>提取</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_2">
+       <widget class="QRadioButton" name="radio_roi_no">
         <property name="text">
-         <string>提取</string>
+         <string>不提取</string>
         </property>
        </widget>
       </item>
@@ -107,6 +166,9 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_4">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="title">
       <string>儲存設定</string>
      </property>

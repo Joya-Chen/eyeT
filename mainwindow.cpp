@@ -21,7 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->loadConfigAndSet();
 
-    m_version = "v2024.01.23.10";
+    this->loadVConfigAndSet();
+
+    m_version = "v2024.01.30.12";
 
     this->initialElementState();
 
@@ -51,6 +53,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui_settingForm,SIGNAL(paramUpdate(QString,QString,QString,int)),this,SLOT(updateSettingParam(QString,QString,QString,int)));
 
+    connect(ui_videoParam,SIGNAL(paramUpdate(QString,int,int)),this,SLOT(updateVideoSettingParam(QString,int,int)));
+
+
     this->startUploadThread();
 
     this->detectCamera();
@@ -61,6 +66,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete ui_videoParam;
+    delete ui_settingForm;
 }
 bool MainWindow::openCamera(int cameraIndex)
 {
@@ -70,17 +77,16 @@ bool MainWindow::openCamera(int cameraIndex)
 
     m_videoUti.cam_setting(&cap_Beam_Cam,480,640);
 
+    m_videoUti.get_cam_original_setting(&cap_Beam_Cam);
+
     if(cap_Beam_Cam.isOpened() == false){
 
         ui->txtShow->appendPlainText("error : camera can't access.");
 
         return false;
     }
-    else {
-        //ui->txtShow->appendPlainText("debug : camera open successfuly.");
-    }
 
-    m_timer->start(20);
+    m_timer->start(10);
 
 
 
@@ -286,8 +292,8 @@ void MainWindow::saveRVideoEnd(){
     progressDialog.show();
 
     // 開始處理任務
-    QString path = QString("%1/%2").arg(m_testerData.m_testerPath).arg("right.mp4");
-    QString oPath = QString("%1/%2").arg(m_testerData.m_testerPath).arg("exright.mp4");
+    QString path = QString("%1/right.%2").arg(m_testerData.m_testerPath).arg(ui_videoParam->getFileCode());
+    QString oPath = QString("%1/exright.%2").arg(m_testerData.m_testerPath).arg(ui_videoParam->getFileCode());
     this->doExVideo(2,path,oPath);
 
     QString returnText = m_upload.uploadVideo(oPath,QString("%1/%2").arg(m_testerData.m_testerPath).arg("right.txt"));
@@ -364,8 +370,8 @@ void MainWindow::saveLVideoEnd()
     progressDialog.setWindowModality(Qt::ApplicationModal);
     progressDialog.show();
     // 開始處理任務
-    QString path = QString("%1/%2").arg(m_testerData.m_testerPath).arg("left.mp4");
-    QString oPath = QString("%1/%2").arg(m_testerData.m_testerPath).arg("exleft.mp4");
+    QString path = QString("%1/left.%2").arg(m_testerData.m_testerPath).arg(ui_videoParam->getFileCode());
+    QString oPath = QString("%1/exleft.%2").arg(m_testerData.m_testerPath).arg(ui_videoParam->getFileCode());
     this->doExVideo(2,path,oPath);
 
     QString returnText = m_upload.uploadVideo(oPath,QString("%1/%2").arg(m_testerData.m_testerPath).arg("left.txt"));
@@ -446,6 +452,24 @@ void MainWindow::updateSettingParam(QString url, QString pwd, QString dataInfo, 
 
 }
 
+void MainWindow::updateVideoSettingParam(QString format, int expose_value, int biteratet)
+{
+    QSettings settings("./video_config.ini", QSettings::IniFormat);
+
+    settings.beginGroup("General");
+
+    settings.setValue("file_Code", format);
+
+    settings.setValue("expose_value", expose_value);
+
+    settings.setValue("bite_rate", biteratet);
+
+    settings.endGroup();
+
+    m_videoUti.setExpose(expose_value);
+
+}
+
 void MainWindow::loadConfigAndSet()
 {
     QSettings settings("./config.ini", QSettings::IniFormat);
@@ -502,8 +526,32 @@ void MainWindow::loadConfigAndSet()
 
 
 }
+void MainWindow::loadVConfigAndSet()
+{
+    QSettings settings("./video_config.ini", QSettings::IniFormat);
 
-void MainWindow::initialElementState(){
+    settings.beginGroup("General");
+
+    QString file_Code;
+    int expose_value;
+    int bite_rate;
+    file_Code = settings.value("file_Code","avi").toString();
+
+    expose_value = settings.value("expose_value",-5).toInt();
+
+    bite_rate = settings.value("bite_rate",0).toInt();
+
+    settings.endGroup();
+
+    ui_videoParam->setDefaultValue(file_Code,expose_value,bite_rate);
+
+    m_videoUti.setExpose(expose_value);
+
+
+}
+
+void MainWindow::initialElementState()
+{
 #ifdef SELF_TEST
     ui->btnCameraStart->setEnabled(true);
 
@@ -570,10 +618,8 @@ void MainWindow::setConfig(){
 
 void MainWindow::startToSaveVideo()
 {
+/*
 
-
-    //cap_Beam_Cam.set(CAP_PROP_FRAME_WIDTH,1920);
-    //cap_Beam_Cam.set(CAP_PROP_FRAME_HEIGHT,1080);
 
     int width = int(cap_Beam_Cam.get(CAP_PROP_FRAME_WIDTH)) ;   // 取得影像寬度
 
@@ -584,15 +630,10 @@ void MainWindow::startToSaveVideo()
 
     Size frameSize(width,height);
 
-    //    cap_Beam_Cam.set(CAP_PROP_FOURCC,VideoWriter::fourcc('m','j','p','g'));
-    //    cap_Beam_Cam.set(CAP_PROP_FOURCC,VideoWriter::fourcc('M','J','P','G'));
-
-
     double fps = 30.0;
 
 
-    // int fourcc = VideoWriter::fourcc('M','P','4','V');// 設定影片的格式為 MJPG
-    //   int fourcc = cap_Beam_Cam.get(CAP_PROP_FOURCC);
+
     int fourcc = VideoWriter::fourcc('M','J','P','G');// 設定影片的格式為 MJPG
 
     QString foler = QDateTime::currentDateTime().toString("yyyy-MM-dd");
@@ -608,12 +649,25 @@ void MainWindow::startToSaveVideo()
     QString filename = QString("%1/%2/%3.avi").arg(dir.currentPath()).arg(foler).arg(name) ;
 
     videoOut = VideoWriter(filename.toStdString(), fourcc, fps, frameSize, true) ; // 產生空的影片
+*/
+
+    QString foler = QDateTime::currentDateTime().toString("yyyy-MM-dd");
+
+    QString name = QDateTime::currentDateTime().toString("hh-mm-ss");
+
+    QDir dir;
+
+    if (dir.mkdir(foler)) { //建立mydir資料夾
+
+    }
+
+    QString filename = QString("%1/%2/%3.%4").arg(dir.currentPath()).arg(foler).arg(name).arg(ui_videoParam->getFileCode()) ;
+
+    this->videoOutSetting(filename);
 
     recordingType = true;
 
-    QTimer::singleShot( 40000 , this , SLOT(saveVideoEnd()));
-
-
+    QTimer::singleShot( 30000 , this , SLOT(saveVideoEnd()));
 
     ui->btnCameraStart->setText(tr("擷取中，請稍後"));
 
@@ -822,6 +876,25 @@ void MainWindow::updateBitrate(int bitrate_M,QString vPath, QString &oPath)
 #endif
 
 }
+void MainWindow::videoOutSetting(QString videoFilePath)
+{
+    int fourcc ;
+    QString format = ui_videoParam->getFileCode();
+
+    if(format == "avi")
+        fourcc = VideoWriter::fourcc('M','J','P','G');// 設定影片的格式為 MJPG
+    else
+        fourcc = VideoWriter::fourcc('M','P','4','V');
+
+    Size frameSize(m_videoUti.getWidth(), m_videoUti.getHeight());
+
+    double fps = m_videoUti.getFPS();
+
+    qDebug()<<"file path:"<<videoFilePath<<"m_videoUti.getWidth():"<<m_videoUti.getWidth()<<"m_videoUti.getHeight():"<<m_videoUti.getHeight()<<"fps:"<<fps;
+
+    videoOut = VideoWriter(videoFilePath.toStdString(), fourcc, fps, frameSize, true) ; // 產生空的影片
+}
+
 bool MainWindow::addToExcel(QList<EYEData> data)
 {
     qDebug()<<"MainWindow::addToExcel";
@@ -1137,29 +1210,15 @@ void MainWindow::on_btnCameraStart_r_clicked()
 
     QMessageBox::information(this,tr("Info"),tr("調整好相機再按下OK"),QMessageBox::Ok);
 
-    int width = 640;//int(cap_Beam_Cam.get(CAP_PROP_FRAME_WIDTH)) ;   // 取得影像寬度
-
-    int height = 480;//int(cap_Beam_Cam.get(CAP_PROP_FRAME_HEIGHT));  // 取得影像高度
-
-    Size frameSize(width,height);
-
-    double fps = 30.0;
-
-    int fourcc = VideoWriter::fourcc('M','P','4','V');// 設定影片的格式為 MJPG
-    //    int fourcc = cap_Beam_Cam.get((CAP_PROP_FOURCC));
-    //   int fourcc = VideoWriter::fourcc('M','J','P','G');// 設定影片的格式為 MJPG
-
     QString name = QString("right");
 
-    QString filename = QString("%1/%2.mp4").arg(m_testerData.m_testerPath).arg(name) ;
+    QString filename = QString("%1/%2.%3").arg(m_testerData.m_testerPath).arg(name).arg(ui_videoParam->getFileCode()) ;
 
-    QString exfileName = QString("%1/ex%2.mp4").arg(m_testerData.m_testerPath).arg(name) ;
+    QString exfileName = QString("%1/ex%2.%3").arg(m_testerData.m_testerPath).arg(name).arg(ui_videoParam->getFileCode()) ;
 
-    //this->deleteFile(filename);
+    //videoOut = VideoWriter(filename.toStdString(), fourcc, fps, frameSize, true) ; // 產生空的影片
 
-    //this->deleteFile(exfileName);
-
-    videoOut = VideoWriter(filename.toStdString(), fourcc, fps, frameSize, true) ; // 產生空的影片
+    this->videoOutSetting(filename);
 
     recordingType = true;
 
@@ -1187,29 +1246,13 @@ void MainWindow::on_btnCameraStart_l_clicked()
 
     QMessageBox::information(this,tr("Info"),tr("調整好相機再按下OK"),QMessageBox::Ok);
 
-    int width = 640;//int(capture_Beam_Ca.get(CAP_PROP_FRAME_WIDTH)) ;   // 取得影像寬度
-
-    int height = 480;//int(capture_Beam_Ca.get(CAP_PROP_FRAME_HEIGHT));  // 取得影像高度
-
-    Size frameSize(width,height);
-
-    double fps = 30.0;
-
-    int fourcc = VideoWriter::fourcc('M','P','4','V');// 設定影片的格式為 MJPG
-
-    //    int fourcc = VideoWriter::fourcc('M','J','P','G');// 設定影片的格式為 MJPG
-
     QString name = QString("left");
 
-    QString filename = QString("%1/%2.mp4").arg(m_testerData.m_testerPath).arg(name) ;
+    QString filename = QString("%1/%2.%3").arg(m_testerData.m_testerPath).arg(name).arg(ui_videoParam->getFileCode()) ;
 
-    QString exfileName = QString("%1/ex%2.mp4").arg(m_testerData.m_testerPath).arg(name) ;
+    QString exfileName = QString("%1/ex%2.%3").arg(m_testerData.m_testerPath).arg(name).arg(ui_videoParam->getFileCode()) ;
 
-    //this->deleteFile(filename);
-
-    //this->deleteFile(exfileName);
-
-    videoOut = VideoWriter(filename.toStdString(), fourcc, fps, frameSize, true) ; // 產生空的影片
+    this->videoOutSetting(filename);
 
     recordingType = true;
 
@@ -1285,6 +1328,14 @@ void MainWindow::on_btnVideoSelUpload_clicked()
 
         ui->txtShow->appendPlainText(QString("上傳完畢\n結果:\n" + result));
 
+        if(result.contains("失敗"))
+        {
+            QMessageBox::information(this,tr("Info"),tr("影片已上傳"),QMessageBox::Ok);
+
+            return ;
+        }
+
+
         QList<EYEData> eyedataList ;
         EYEData data;
         data.videoPath = oPath;
@@ -1323,6 +1374,9 @@ void MainWindow::on_btnVideoSelUpload_clicked()
 void MainWindow::on_btnVideoSetting_clicked()
 {
     m_videoUti.get_cam_original_setting(&cap_Beam_Cam);
+
+    m_videoUti.openCamera(&cap_Beam_Cam,0);
+
 }
 
 void MainWindow::on_btnVideoSeltoNolight_clicked()

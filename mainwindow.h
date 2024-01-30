@@ -140,6 +140,9 @@ private:
     QString m_version ;
 
     void loadConfigAndSet();
+    void loadVConfigAndSet();
+
+
     void initialElementState();
     void setConfig();
     void startToSaveVideo();
@@ -149,9 +152,11 @@ private:
     void showInfo(QString title, QString text);
     void initial_Tester_btnStats();
 
-    int deleteFile(QString filePath);
+    int  deleteFile(QString filePath);
     void updateBitrate(int bitrate_M,QString vPath, QString &oPath);
     bool addToExcel(QList<EYEData> data);
+    void videoOutSetting(QString videoFilePath); //"" : self test, "right":right eye setting, "left:"left eye setting
+
 signals:
     void uploadVideoFile(QString vPath, QString oPath);
 
@@ -165,6 +170,7 @@ public slots:
     void uploadDone();
     void uploadProgress(qint64 bytesSent, qint64 bytesTotal);
     void updateSettingParam(QString url, QString pwd, QString dataInfo, int timeout);
+    void updateVideoSettingParam(QString format, int expose_value, int biterate);
 private slots:
     void on_comboBox_camList_currentIndexChanged(int index);
     void on_btnCameraStart_clicked();

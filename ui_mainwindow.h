@@ -105,7 +105,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1136, 923);
+        MainWindow->resize(1208, 927);
         MainWindow->setMinimumSize(QSize(0, 0));
         QFont font;
         font.setFamily(QString::fromUtf8("\345\276\256\350\273\237\346\255\243\351\273\221\351\253\224"));
@@ -133,7 +133,7 @@ public:
         action_upload_set->setObjectName(QStringLiteral("action_upload_set"));
         actio_video_set = new QAction(MainWindow);
         actio_video_set->setObjectName(QStringLiteral("actio_video_set"));
-        actio_video_set->setEnabled(false);
+        actio_video_set->setEnabled(true);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -491,7 +491,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1136, 28));
+        menuBar->setGeometry(QRect(0, 0, 1208, 28));
         menuBar->setFont(font7);
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));

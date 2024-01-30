@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling,true);
 #ifdef SELF_TEST
-    qInstallMessageHandler(customMessageHandler);
+    //qInstallMessageHandler(customMessageHandler);
 #endif
     QApplication a(argc, argv);
 
@@ -46,5 +46,9 @@ int main(int argc, char *argv[])
 
     a.setWindowIcon(QIcon("./deepicon.png"));
 
-    return a.exec();
+    int result = a.exec();
+
+    a.quit();
+
+    return result;
 }

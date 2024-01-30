@@ -13,11 +13,11 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
@@ -30,20 +30,27 @@ class Ui_videoParam
 {
 public:
     QVBoxLayout *verticalLayout;
-    QGroupBox *groupBox;
+    QGroupBox *groupBox_format;
     QHBoxLayout *horizontalLayout;
     QRadioButton *radio_avi;
     QRadioButton *radio_mp4;
-    QGroupBox *groupBox_2;
+    QGroupBox *groupBox_expose;
+    QHBoxLayout *horizontalLayout_6;
+    QRadioButton *radio_expose_auto;
+    QRadioButton *radio_expose_4;
+    QRadioButton *radio_expose_5;
+    QRadioButton *radio_expose_6;
+    QLabel *label_exposeValue;
+    QGroupBox *groupBox_biterate;
     QHBoxLayout *horizontalLayout_2;
-    QRadioButton *radioButton_3;
-    QRadioButton *radioButton_4;
-    QRadioButton *radioButton_5;
-    QRadioButton *radioButton_6;
+    QRadioButton *radio_bitra_auto;
+    QRadioButton *radio_bitra_2M;
+    QRadioButton *radio_bitra_3M;
+    QRadioButton *radio_bitra_4M;
     QGroupBox *groupBox_3;
     QHBoxLayout *horizontalLayout_3;
-    QCheckBox *checkBox;
-    QCheckBox *checkBox_2;
+    QRadioButton *radio_roi_crop;
+    QRadioButton *radio_roi_no;
     QGroupBox *groupBox_4;
     QHBoxLayout *horizontalLayout_4;
     QRadioButton *radioButton_7;
@@ -63,69 +70,107 @@ public:
         videoParam->setFont(font);
         verticalLayout = new QVBoxLayout(videoParam);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        groupBox = new QGroupBox(videoParam);
-        groupBox->setObjectName(QStringLiteral("groupBox"));
-        horizontalLayout = new QHBoxLayout(groupBox);
+        groupBox_format = new QGroupBox(videoParam);
+        groupBox_format->setObjectName(QStringLiteral("groupBox_format"));
+        horizontalLayout = new QHBoxLayout(groupBox_format);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        radio_avi = new QRadioButton(groupBox);
+        radio_avi = new QRadioButton(groupBox_format);
         radio_avi->setObjectName(QStringLiteral("radio_avi"));
+        radio_avi->setChecked(true);
 
         horizontalLayout->addWidget(radio_avi);
 
-        radio_mp4 = new QRadioButton(groupBox);
+        radio_mp4 = new QRadioButton(groupBox_format);
         radio_mp4->setObjectName(QStringLiteral("radio_mp4"));
 
         horizontalLayout->addWidget(radio_mp4);
 
 
-        verticalLayout->addWidget(groupBox);
+        verticalLayout->addWidget(groupBox_format);
 
-        groupBox_2 = new QGroupBox(videoParam);
-        groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
-        horizontalLayout_2 = new QHBoxLayout(groupBox_2);
+        groupBox_expose = new QGroupBox(videoParam);
+        groupBox_expose->setObjectName(QStringLiteral("groupBox_expose"));
+        horizontalLayout_6 = new QHBoxLayout(groupBox_expose);
+        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        radio_expose_auto = new QRadioButton(groupBox_expose);
+        radio_expose_auto->setObjectName(QStringLiteral("radio_expose_auto"));
+        radio_expose_auto->setEnabled(false);
+
+        horizontalLayout_6->addWidget(radio_expose_auto);
+
+        radio_expose_4 = new QRadioButton(groupBox_expose);
+        radio_expose_4->setObjectName(QStringLiteral("radio_expose_4"));
+
+        horizontalLayout_6->addWidget(radio_expose_4);
+
+        radio_expose_5 = new QRadioButton(groupBox_expose);
+        radio_expose_5->setObjectName(QStringLiteral("radio_expose_5"));
+        radio_expose_5->setChecked(true);
+
+        horizontalLayout_6->addWidget(radio_expose_5);
+
+        radio_expose_6 = new QRadioButton(groupBox_expose);
+        radio_expose_6->setObjectName(QStringLiteral("radio_expose_6"));
+
+        horizontalLayout_6->addWidget(radio_expose_6);
+
+        label_exposeValue = new QLabel(groupBox_expose);
+        label_exposeValue->setObjectName(QStringLiteral("label_exposeValue"));
+
+        horizontalLayout_6->addWidget(label_exposeValue);
+
+
+        verticalLayout->addWidget(groupBox_expose);
+
+        groupBox_biterate = new QGroupBox(videoParam);
+        groupBox_biterate->setObjectName(QStringLiteral("groupBox_biterate"));
+        horizontalLayout_2 = new QHBoxLayout(groupBox_biterate);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        radioButton_3 = new QRadioButton(groupBox_2);
-        radioButton_3->setObjectName(QStringLiteral("radioButton_3"));
+        radio_bitra_auto = new QRadioButton(groupBox_biterate);
+        radio_bitra_auto->setObjectName(QStringLiteral("radio_bitra_auto"));
+        radio_bitra_auto->setEnabled(true);
+        radio_bitra_auto->setChecked(true);
 
-        horizontalLayout_2->addWidget(radioButton_3);
+        horizontalLayout_2->addWidget(radio_bitra_auto);
 
-        radioButton_4 = new QRadioButton(groupBox_2);
-        radioButton_4->setObjectName(QStringLiteral("radioButton_4"));
+        radio_bitra_2M = new QRadioButton(groupBox_biterate);
+        radio_bitra_2M->setObjectName(QStringLiteral("radio_bitra_2M"));
 
-        horizontalLayout_2->addWidget(radioButton_4);
+        horizontalLayout_2->addWidget(radio_bitra_2M);
 
-        radioButton_5 = new QRadioButton(groupBox_2);
-        radioButton_5->setObjectName(QStringLiteral("radioButton_5"));
+        radio_bitra_3M = new QRadioButton(groupBox_biterate);
+        radio_bitra_3M->setObjectName(QStringLiteral("radio_bitra_3M"));
 
-        horizontalLayout_2->addWidget(radioButton_5);
+        horizontalLayout_2->addWidget(radio_bitra_3M);
 
-        radioButton_6 = new QRadioButton(groupBox_2);
-        radioButton_6->setObjectName(QStringLiteral("radioButton_6"));
+        radio_bitra_4M = new QRadioButton(groupBox_biterate);
+        radio_bitra_4M->setObjectName(QStringLiteral("radio_bitra_4M"));
 
-        horizontalLayout_2->addWidget(radioButton_6);
+        horizontalLayout_2->addWidget(radio_bitra_4M);
 
 
-        verticalLayout->addWidget(groupBox_2);
+        verticalLayout->addWidget(groupBox_biterate);
 
         groupBox_3 = new QGroupBox(videoParam);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
         horizontalLayout_3 = new QHBoxLayout(groupBox_3);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        checkBox = new QCheckBox(groupBox_3);
-        checkBox->setObjectName(QStringLiteral("checkBox"));
+        radio_roi_crop = new QRadioButton(groupBox_3);
+        radio_roi_crop->setObjectName(QStringLiteral("radio_roi_crop"));
 
-        horizontalLayout_3->addWidget(checkBox);
+        horizontalLayout_3->addWidget(radio_roi_crop);
 
-        checkBox_2 = new QCheckBox(groupBox_3);
-        checkBox_2->setObjectName(QStringLiteral("checkBox_2"));
+        radio_roi_no = new QRadioButton(groupBox_3);
+        radio_roi_no->setObjectName(QStringLiteral("radio_roi_no"));
 
-        horizontalLayout_3->addWidget(checkBox_2);
+        horizontalLayout_3->addWidget(radio_roi_no);
 
 
         verticalLayout->addWidget(groupBox_3);
 
         groupBox_4 = new QGroupBox(videoParam);
         groupBox_4->setObjectName(QStringLiteral("groupBox_4"));
+        groupBox_4->setEnabled(true);
         horizontalLayout_4 = new QHBoxLayout(groupBox_4);
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
         radioButton_7 = new QRadioButton(groupBox_4);
@@ -174,17 +219,23 @@ public:
 #ifndef QT_NO_WHATSTHIS
         videoParam->setWhatsThis(QApplication::translate("videoParam", "\345\217\257\350\250\255\345\256\232\345\275\261\347\211\207\345\204\262\345\255\230\345\217\203\346\225\270", Q_NULLPTR));
 #endif // QT_NO_WHATSTHIS
-        groupBox->setTitle(QApplication::translate("videoParam", "\345\275\261\347\211\207\346\240\274\345\274\217", Q_NULLPTR));
+        groupBox_format->setTitle(QApplication::translate("videoParam", "\345\275\261\347\211\207\346\240\274\345\274\217", Q_NULLPTR));
         radio_avi->setText(QApplication::translate("videoParam", "avi", Q_NULLPTR));
         radio_mp4->setText(QApplication::translate("videoParam", "mp4", Q_NULLPTR));
-        groupBox_2->setTitle(QApplication::translate("videoParam", "Biterate", Q_NULLPTR));
-        radioButton_3->setText(QApplication::translate("videoParam", "\344\270\215\351\231\220\345\210\266", Q_NULLPTR));
-        radioButton_4->setText(QApplication::translate("videoParam", "2M", Q_NULLPTR));
-        radioButton_5->setText(QApplication::translate("videoParam", "3M", Q_NULLPTR));
-        radioButton_6->setText(QApplication::translate("videoParam", "4M", Q_NULLPTR));
+        groupBox_expose->setTitle(QApplication::translate("videoParam", "\346\233\235\345\205\211\345\272\246", Q_NULLPTR));
+        radio_expose_auto->setText(QApplication::translate("videoParam", "AUTO", Q_NULLPTR));
+        radio_expose_4->setText(QApplication::translate("videoParam", "-4", Q_NULLPTR));
+        radio_expose_5->setText(QApplication::translate("videoParam", "-5", Q_NULLPTR));
+        radio_expose_6->setText(QApplication::translate("videoParam", "-6", Q_NULLPTR));
+        label_exposeValue->setText(QString());
+        groupBox_biterate->setTitle(QApplication::translate("videoParam", "Biterate\357\274\210\357\274\255\357\274\242\357\274\211", Q_NULLPTR));
+        radio_bitra_auto->setText(QApplication::translate("videoParam", "AUTO", Q_NULLPTR));
+        radio_bitra_2M->setText(QApplication::translate("videoParam", "2", Q_NULLPTR));
+        radio_bitra_3M->setText(QApplication::translate("videoParam", "3", Q_NULLPTR));
+        radio_bitra_4M->setText(QApplication::translate("videoParam", "4", Q_NULLPTR));
         groupBox_3->setTitle(QApplication::translate("videoParam", "ROI\346\217\220\345\217\226", Q_NULLPTR));
-        checkBox->setText(QApplication::translate("videoParam", "\344\270\215\346\217\220\345\217\226", Q_NULLPTR));
-        checkBox_2->setText(QApplication::translate("videoParam", "\346\217\220\345\217\226", Q_NULLPTR));
+        radio_roi_crop->setText(QApplication::translate("videoParam", "\346\217\220\345\217\226", Q_NULLPTR));
+        radio_roi_no->setText(QApplication::translate("videoParam", "\344\270\215\346\217\220\345\217\226", Q_NULLPTR));
         groupBox_4->setTitle(QApplication::translate("videoParam", "\345\204\262\345\255\230\350\250\255\345\256\232", Q_NULLPTR));
         radioButton_7->setText(QApplication::translate("videoParam", "\344\277\235\347\225\231\346\257\217\345\200\213\345\275\261\347\211\207", Q_NULLPTR));
         radioButton_8->setText(QApplication::translate("videoParam", "\345\203\205\344\277\235\347\225\231\345\267\246\347\234\274\345\217\263\347\234\274\345\220\204\344\270\200", Q_NULLPTR));

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1136</width>
-    <height>923</height>
+    <width>1208</width>
+    <height>927</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -768,7 +768,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1136</width>
+     <width>1208</width>
      <height>28</height>
     </rect>
    </property>
@@ -894,7 +894,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actio_video_set">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>設定</string>
