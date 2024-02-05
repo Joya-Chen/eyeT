@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     handler/uploadhandler.cpp \
     dialog.cpp \
     settingform.cpp \
-    videoparam.cpp
+    videoparam.cpp \
+    processform.cpp
 
 HEADERS  += mainwindow.h \
     frameHandler/frameutility.h \
@@ -39,12 +40,14 @@ HEADERS  += mainwindow.h \
     handler/uploadhandler.h \
     dialog.h \
     settingform.h \
-    videoparam.h
+    videoparam.h \
+    processform.h
 
 FORMS    += mainwindow.ui \
     dialog.ui \
     settingform.ui \
-    videoparam.ui
+    videoparam.ui \
+    processform.ui
 
 INCLUDEPATH += C:\opencv\build\include
 LIBS += C:\opencv\opencv-build\bin\opencv_videoio_ffmpeg481.dll
@@ -73,7 +76,9 @@ LIBS += -LC:\Users\DeepObverse\AppData\Local\Programs\Python\Python312-32\libs\ 
 DISTFILES += \
     release/TEST.py \
     release/TEST_2param.py \
-    release/ROI.py
+    release/ROI.py \
+    release/ADJUST.py \
+    release/TRACKING.py
 
 RESOURCES += \
     icon.qrc

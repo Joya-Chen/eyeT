@@ -234,11 +234,11 @@ public:
         radio_bitra_3M->setText(QApplication::translate("videoParam", "3", Q_NULLPTR));
         radio_bitra_4M->setText(QApplication::translate("videoParam", "4", Q_NULLPTR));
         groupBox_3->setTitle(QApplication::translate("videoParam", "ROI\346\217\220\345\217\226", Q_NULLPTR));
-        radio_roi_crop->setText(QApplication::translate("videoParam", "\346\217\220\345\217\226", Q_NULLPTR));
-        radio_roi_no->setText(QApplication::translate("videoParam", "\344\270\215\346\217\220\345\217\226", Q_NULLPTR));
-        groupBox_4->setTitle(QApplication::translate("videoParam", "\345\204\262\345\255\230\350\250\255\345\256\232", Q_NULLPTR));
-        radioButton_7->setText(QApplication::translate("videoParam", "\344\277\235\347\225\231\346\257\217\345\200\213\345\275\261\347\211\207", Q_NULLPTR));
-        radioButton_8->setText(QApplication::translate("videoParam", "\345\203\205\344\277\235\347\225\231\345\267\246\347\234\274\345\217\263\347\234\274\345\220\204\344\270\200", Q_NULLPTR));
+        radio_roi_crop->setText(QApplication::translate("videoParam", "\350\207\252\345\213\225", Q_NULLPTR));
+        radio_roi_no->setText(QApplication::translate("videoParam", "\346\211\213\345\213\225", Q_NULLPTR));
+        groupBox_4->setTitle(QApplication::translate("videoParam", "\345\275\261\347\211\207\345\210\207\345\211\262", Q_NULLPTR));
+        radioButton_7->setText(QApplication::translate("videoParam", "3S", Q_NULLPTR));
+        radioButton_8->setText(QApplication::translate("videoParam", "overlap2S", Q_NULLPTR));
         btn_ok->setText(QApplication::translate("videoParam", "\347\242\272\345\256\232", Q_NULLPTR));
     } // retranslateUi
 

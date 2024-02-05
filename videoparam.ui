@@ -150,14 +150,14 @@
       <item>
        <widget class="QRadioButton" name="radio_roi_crop">
         <property name="text">
-         <string>提取</string>
+         <string>自動</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QRadioButton" name="radio_roi_no">
         <property name="text">
-         <string>不提取</string>
+         <string>手動</string>
         </property>
        </widget>
       </item>
@@ -170,20 +170,20 @@
       <bool>true</bool>
      </property>
      <property name="title">
-      <string>儲存設定</string>
+      <string>影片切割</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
        <widget class="QRadioButton" name="radioButton_7">
         <property name="text">
-         <string>保留每個影片</string>
+         <string>3S</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QRadioButton" name="radioButton_8">
         <property name="text">
-         <string>僅保留左眼右眼各一</string>
+         <string>overlap2S</string>
         </property>
        </widget>
       </item>

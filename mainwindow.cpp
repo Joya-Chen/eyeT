@@ -19,11 +19,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui_videoParam = new videoParam(this);
 
+    ui_processForm = new processForm(this);
+
+    //ui_processForm->show();
+
+    ui_processForm->hide();
+
+    this->startUploadThread();
+
     this->loadConfigAndSet();
 
     this->loadVConfigAndSet();
 
-    m_version = "v2024.01.30.12";
+    m_version = "v2024.02.04.13";
 
     this->initialElementState();
 
@@ -54,9 +62,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui_settingForm,SIGNAL(paramUpdate(QString,QString,QString,int)),this,SLOT(updateSettingParam(QString,QString,QString,int)));
 
     connect(ui_videoParam,SIGNAL(paramUpdate(QString,int,int)),this,SLOT(updateVideoSettingParam(QString,int,int)));
-
-
-    this->startUploadThread();
 
     this->detectCamera();
 
@@ -276,49 +281,53 @@ void MainWindow::saveRVideoEnd(){
     ui->btnRefresh->setEnabled(true);
 
     ui->btn_tester_finish->setEnabled(true);
-    /*
-    m_testerData.m_videoRightFinished = true;
 
-    if(m_testerData.m_videoRightFinished && m_testerData.m_videoLeftFinished){
-        this->initialElementState();
+    ui_processForm->setHintText(tr("影片處理中"));
 
-        ui->btnOpenFolder->setEnabled(true);
-        ui->btnVideoSelUpload->setEnabled(true);
-    }
-*/
-    QProgressDialog progressDialog("...UPLOAD...", "Cancel",10, 100, this);
-    progressDialog.setWindowTitle(tr("檔案上傳中"));
-    progressDialog.setWindowModality(Qt::ApplicationModal);
-    progressDialog.show();
+    ui_processForm->show();
 
     // 開始處理任務
     QString path = QString("%1/right.%2").arg(m_testerData.m_testerPath).arg(ui_videoParam->getFileCode());
+    /*
     QString oPath = QString("%1/exright.%2").arg(m_testerData.m_testerPath).arg(ui_videoParam->getFileCode());
     this->doExVideo(2,path,oPath);
-
-    QString returnText = m_upload.uploadVideo(oPath,QString("%1/%2").arg(m_testerData.m_testerPath).arg("right.txt"));
-    /*
+    */
     QEventLoop m_loop;
 
     QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
-    ///
-    emit uploadVideoFile(fileName,QString("%1/%2").arg(base.path()).arg("out.txt"));
+
+    emit autoProcessVideo(path,"right",ui_videoParam->getFileCode());
 
     m_loop.exec();
 
     qDebug()<<"finish";
 
-    QString result = m_uploadThread->getReturnText();
-    */
-    // 關閉處理中畫面
-    progressDialog.close();
+    QString returnText = m_uploadThread->getReturnText();
 
-    ui->txtShow->appendPlainText(tr("檔案上傳%1\n開始上傳...").arg(m_testerData.m_testerPath));
+    QDir dir(m_testerData.m_testerPath);
 
-    ui->txtShow->appendPlainText((QString("上傳完畢\n結果:\n" + returnText)));
+    QStringList filters;
 
-    QMessageBox::information(this,tr("Info"),tr("影片已上傳"),QMessageBox::Ok);
+    filters << "overlap_*.avi" << "overlap_*.mp4"; // 選擇以overlap_開頭的jpg和png文件
 
+    dir.setNameFilters(filters);
+
+    QStringList fileList = dir.entryList(QDir::Files); // 只選文件，不包括folder
+
+    QStringList files;
+    foreach(QString file, fileList) {
+
+        QString absolutePath = dir.absoluteFilePath(file);
+
+        files.append(absolutePath);
+
+        qDebug() << "Found file:" << absolutePath;
+
+    }
+
+    this->doFilesUpload(files);
+
+    return ;
 }
 
 void MainWindow::saveLVideoEnd()
@@ -354,50 +363,53 @@ void MainWindow::saveLVideoEnd()
     ui->comboBox_camList->setEnabled(true);
 
     ui->btnRefresh->setEnabled(true);
-    /*
-    if(m_testerData.m_videoRightFinished && m_testerData.m_videoLeftFinished){
-        this->initialElementState();
 
-        ui->btnOpenFolder->setEnabled(true);
-        ui->btnVideoSelUpload->setEnabled(true);
-    }
-*/
+    ui->btn_tester_finish->setEnabled(true);
 
+    ui_processForm->setHintText(tr("影片處理中"));
 
+    ui_processForm->show();
 
-    QProgressDialog progressDialog("...UPLOAD...", "Cancel",10, 100, this);
-    progressDialog.setWindowTitle(tr("檔案上傳中"));
-    progressDialog.setWindowModality(Qt::ApplicationModal);
-    progressDialog.show();
     // 開始處理任務
     QString path = QString("%1/left.%2").arg(m_testerData.m_testerPath).arg(ui_videoParam->getFileCode());
-    QString oPath = QString("%1/exleft.%2").arg(m_testerData.m_testerPath).arg(ui_videoParam->getFileCode());
-    this->doExVideo(2,path,oPath);
 
-    QString returnText = m_upload.uploadVideo(oPath,QString("%1/%2").arg(m_testerData.m_testerPath).arg("left.txt"));
-
-    /*
     QEventLoop m_loop;
 
     QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
-    ///
-    emit uploadVideoFile(fileName,QString("%1/%2").arg(base.path()).arg("out.txt"));
+
+    emit autoProcessVideo(path,"left",ui_videoParam->getFileCode());
 
     m_loop.exec();
 
     qDebug()<<"finish";
 
-    QString result = m_uploadThread->getReturnText();
-    */
-    // 關閉處理中畫面
-    progressDialog.close();
+    QString returnText = m_uploadThread->getReturnText();
 
+    QDir dir(m_testerData.m_testerPath);
 
-    ui->txtShow->appendPlainText(tr("檔案上傳%1\n開始上傳...").arg(m_testerData.m_testerPath));
+    QStringList filters;
 
-    ui->txtShow->appendPlainText((QString("上傳完畢\n結果:\n" + returnText)));
+    filters << "overlap_*.avi" << "overlap_*.mp4"; // 選擇以overlap_開頭的jpg和png文件
 
-    QMessageBox::information(this,tr("Info"),tr("影片已上傳"),QMessageBox::Ok);
+    dir.setNameFilters(filters);
+
+    QStringList fileList = dir.entryList(QDir::Files); // 只選文件，不包括folder
+
+    QStringList files;
+    foreach(QString file, fileList) {
+
+        QString absolutePath = dir.absoluteFilePath(file);
+
+        files.append(absolutePath);
+
+        qDebug() << "Found file:" << absolutePath;
+
+    }
+
+    this->doFilesUpload(files);
+
+    return ;
+
 }
 
 void MainWindow::setCountdownText()
@@ -445,10 +457,7 @@ void MainWindow::updateSettingParam(QString url, QString pwd, QString dataInfo, 
 
     settings.endGroup();
 
-    m_upload.setUrl(url);
-    m_upload.setPwd(pwd);
-    m_upload.setDataInfo(dataInfo);
-    m_upload.setTimeout(timeout);
+    emit setUploadParam(url,pwd,dataInfo,timeout);
 
 }
 
@@ -517,13 +526,7 @@ void MainWindow::loadConfigAndSet()
 
     ui_settingForm->setDefault(url,pwd,dataInfo,timeout);
 
-    m_upload.setUrl(url);
-    m_upload.setPwd(pwd);
-    m_upload.setDataInfo(dataInfo);
-    m_upload.setTimeout(timeout);
-
-
-
+    emit setUploadParam(url,pwd,dataInfo,timeout);
 
 }
 void MainWindow::loadVConfigAndSet()
@@ -555,23 +558,11 @@ void MainWindow::initialElementState()
 #ifdef SELF_TEST
     ui->btnCameraStart->setEnabled(true);
 
-    ui->btnCameraStop->setEnabled(true);
-
-    ui->btnVideoSeltoCanny->setEnabled(true);
-
-    ui->btnVideoSeltoNolight->setEnabled(true);
-
     ui->btnVideoSetting->setEnabled(true);
 
-    ui->btnVideoSelUpload->setEnabled(true);
+
 #else
     ui->btnCameraStart->setHidden(true);
-
-    ui->btnCameraStop->setHidden(true);
-
-    ui->btnVideoSeltoCanny->setHidden(true);
-
-    ui->btnVideoSeltoNolight->setHidden(true);
 
     ui->btnVideoSetting->setHidden(true);
 
@@ -603,6 +594,13 @@ void MainWindow::initialElementState()
 
     ui->label_version->setText(this->getVersion());
 
+    ui->btnVideoSeltoCanny->setEnabled(true);
+
+    ui->btnCameraStop->setEnabled(true);
+
+    ui->btnVideoSelTest->setEnabled(true);
+
+    ui->btnVideoSelUpload->setEnabled(true);
 }
 
 void MainWindow::setConfig(){
@@ -618,7 +616,7 @@ void MainWindow::setConfig(){
 
 void MainWindow::startToSaveVideo()
 {
-/*
+    /*
 
 
     int width = int(cap_Beam_Cam.get(CAP_PROP_FRAME_WIDTH)) ;   // 取得影像寬度
@@ -751,7 +749,13 @@ void MainWindow::startUploadThread()
     m_uploadThread = new uploadThread();
 
     QObject::connect(this, SIGNAL(uploadVideoFile(QString,QString)), m_uploadThread, SLOT(videoUploadTrans(QString,QString)));
-
+    QObject::connect(this, SIGNAL(batchvideoUploadTrans(QStringList, QString)), m_uploadThread, SLOT(batchvideoUploadTrans(QStringList, QString)));
+    QObject::connect(this, SIGNAL(setUploadParam(QString,QString,QString,int)), m_uploadThread, SLOT(uploadParamInitialSet(QString,QString,QString,int)));
+    QObject::connect(this, SIGNAL(adjustVideo(QString, QString, QString)), m_uploadThread, SLOT(adjustVideo(QString, QString, QString)));
+    QObject::connect(this, SIGNAL(autoROITrackingAndSplite(QString)), m_uploadThread, SLOT(autoROITrackingAndSplite(QString)));
+    QObject::connect(this, SIGNAL(roiTrackingAndSplite(QString)), m_uploadThread, SLOT(roiTrackingAndSplite(QString)));
+    QObject::connect(this, SIGNAL(splitVideotoSegmant(QString,int)), m_uploadThread, SLOT(splitVideotoSegmant(QString,int)));
+    QObject::connect(this, SIGNAL(autoProcessVideo(QString, QString, QString)), m_uploadThread, SLOT(autoProcessVideo(QString, QString, QString)));
     m_uploadThread->moveToThread(&m_uploadT);
 
     m_uploadT.start();
@@ -893,6 +897,120 @@ void MainWindow::videoOutSetting(QString videoFilePath)
     qDebug()<<"file path:"<<videoFilePath<<"m_videoUti.getWidth():"<<m_videoUti.getWidth()<<"m_videoUti.getHeight():"<<m_videoUti.getHeight()<<"fps:"<<fps;
 
     videoOut = VideoWriter(videoFilePath.toStdString(), fourcc, fps, frameSize, true) ; // 產生空的影片
+}
+void MainWindow::doFilesUpload(QStringList fileNames)
+{
+
+    ui_processForm->show();
+
+    ui_processForm->setHintText(tr("檔案上傳中"));
+
+    //qDebug()<<"before del:"<<fileNames ;
+    if (!fileNames.isEmpty()) {
+        // 選擇了文件，處理文件列表
+        int i = 0;
+        foreach (const QString &fileName, fileNames) {
+            // 對每個選擇的文件進行處理 確認檔案大小 是否為空 空的刪除
+            qDebug()<<i;
+            if (!fileName.isEmpty()) {
+                // 選擇了文件，可以進行相應的操作
+                QFileInfo base(fileName);
+                if(base.size()<400000)
+                {
+                    fileNames[i] = "";
+                    //qDebug()<<"delete size too small file:index "<<i<<":"<<fileName;
+                    QFile file(fileName);
+                    file.remove();
+                }
+                i++;
+            }
+        }
+
+        fileNames.removeAll("");
+        //qDebug()<<"after del:"<<fileNames ;
+    }
+    else {
+        //ui->txtShow->appendPlainText(tr("找不到檔案"));
+        ui_processForm->hide();
+        return ;
+
+    }
+
+    if(fileNames.size() == 1)
+    {
+        QFileInfo base(fileNames.at(0));
+
+        QString outTxtPath = QString("%1/%2_%3").arg(base.path()).arg(base.baseName()).arg("out.txt");
+
+        ui_processForm->setHintText(tr("上傳中"));
+
+        ui_processForm->show();
+
+        QEventLoop m_loop;
+
+        QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
+        ///
+        emit uploadVideoFile(fileNames.at(0),outTxtPath);
+
+        m_loop.exec();
+
+        qDebug()<<"finish";
+
+        QString result = m_uploadThread->getReturnText();
+
+        ui->txtShow->appendPlainText(QString("上傳完畢\n結果:\n" + result));
+
+        if(result.contains("失敗"))
+        {
+            ui_processForm->hide();
+
+            return ;
+        }
+
+        ui->txtShow->appendPlainText(QString("自動轉存excel done\n"));
+
+        ui_processForm->hide();
+
+        return ;
+    }
+
+    QFileInfo videoBase(fileNames.at(0));
+
+    QString outTxtPath = QString("%1/%2").arg(videoBase.path()).arg("out.txt");
+
+    ui->txtShow->appendPlainText(tr("測試上傳%1內文件\n回傳文件%2\n開始上傳...").arg(videoBase.path()).arg(outTxtPath));
+
+    ui_processForm->setHintText(tr("上傳中"));
+
+    ui_processForm->show();
+
+    QEventLoop m_loop;
+
+    QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
+    ///
+    emit batchvideoUploadTrans(fileNames, outTxtPath);
+
+    m_loop.exec();
+
+    qDebug()<<"finish";
+
+    QString result = m_uploadThread->getReturnText();
+
+    ui->txtShow->appendPlainText(QString("上傳完畢\n結果:\n" + result));
+
+    if(result.contains("失敗"))
+    {
+        ui_processForm->hide();
+
+        QMessageBox::information(this,tr("Info"),tr("影片已上傳"),QMessageBox::Ok);
+
+        return ;
+    }
+
+    ui->txtShow->appendPlainText(QString("自動轉存excel done\n"));
+
+    ui_processForm->hide();
+
 }
 
 bool MainWindow::addToExcel(QList<EYEData> data)
@@ -1274,100 +1392,10 @@ void MainWindow::on_btnCameraStart_l_clicked()
 void MainWindow::on_btnVideoSelUpload_clicked()
 {
 
-    QString fileName = QFileDialog::getOpenFileName(this, tr("選擇影片檔"), "", tr("所有文件 (*.*)"));
+    QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("選擇影片檔"), "", tr("所有文件 (*.*)"));
 
-    if (!fileName.isEmpty()) {
-        // 選擇了文件，可以進行相應的操作
+    this->doFilesUpload(fileNames);
 
-        QFileInfo base(fileName);
-
-        qDebug()<< "filePath:"<<fileName <<"dir:"<<base.path()<<"fileName"<<base.fileName();
-        //
-
-        QProgressDialog progressDialog("...UPLOAD...", "Cancel",10, 100, this);
-        progressDialog.setWindowTitle(tr("檔案上傳中"));
-        progressDialog.setWindowModality(Qt::ApplicationModal);
-        progressDialog.show();
-        // 開始處理任務
-        QString path, oPath;
-        if(base.fileName().contains("ex"))
-        {
-            path = fileName;
-            oPath = fileName;
-        }
-        else{
-            path = fileName;
-            oPath = QString("%1/ex%2").arg(base.path()).arg(base.fileName());
-            this->doExVideo(2,path,oPath);
-        }
-
-        QFileInfo videoBase(oPath);
-
-        QString outTxtPath = QString("%1/%2_%3").arg(base.path()).arg(videoBase.baseName()).arg("out.txt");
-
-        ui->txtShow->appendPlainText(tr("測試上傳%1,回傳文件%2\n開始上傳...").arg(oPath).arg(outTxtPath));
-
-        QString result = m_upload.uploadVideo(oPath,outTxtPath);
-
-
-/*
-        QEventLoop m_loop;
-
-        QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
-        ///
-        emit uploadVideoFile(oPath,outTxtPath);
-
-        m_loop.exec();
-
-        qDebug()<<"finish";
-
-        QString result = m_uploadThread->getReturnText();
-*/
-        // 關閉處理中畫面
-        progressDialog.close();
-
-        ui->txtShow->appendPlainText(QString("上傳完畢\n結果:\n" + result));
-
-        if(result.contains("失敗"))
-        {
-            QMessageBox::information(this,tr("Info"),tr("影片已上傳"),QMessageBox::Ok);
-
-            return ;
-        }
-
-
-        QList<EYEData> eyedataList ;
-        EYEData data;
-        data.videoPath = oPath;
-        data.outputTxtPath = outTxtPath;
-        QStringList dataList = result.trimmed().split("\n");
-        qDebug()<<"dataList:"<<dataList;
-        QStringList valueList;
-        foreach(QString item, dataList) {
-            QStringList pair = item.split(":");
-
-            valueList.append(pair[1]);
-
-            // 在這裡可以使用 key 和 value 來進行相應的處理
-        }
-
-        data.Situation = valueList.at(0);
-        data.S2 = valueList.at(1);
-        data.bpm = valueList.at(2);
-        data.LTv = valueList.at(3);
-        data.bpv0 = valueList.at(4);
-        data.bpv1 = valueList.at(5);
-        data.glu = valueList.at(6);
-        qDebug()<<"valueList:"<<valueList;
-        eyedataList.append(data);
-
-
-        this->addToExcel(eyedataList);
-
-        ui->txtShow->appendPlainText(QString("自動轉存excel done\n"));
-
-        QMessageBox::information(this,tr("Info"),tr("影片已上傳"),QMessageBox::Ok);
-    }
 }
 
 
@@ -1379,14 +1407,9 @@ void MainWindow::on_btnVideoSetting_clicked()
 
 }
 
-void MainWindow::on_btnVideoSeltoNolight_clicked()
-{
-
-}
-
 void MainWindow::on_btnVideoSeltoCanny_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("選擇圖片"), "", tr("所有文件 (*.*);"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("選擇影片"), "", tr("所有文件 (*.*);"));
 
     if (!fileName.isEmpty()) {
         // 選擇了文件，可以進行相應的操作
@@ -1395,9 +1418,31 @@ void MainWindow::on_btnVideoSeltoCanny_clicked()
 
         qDebug()<< "fileName:"<<fileName <<"dir:"<<base.path();
 
-        m_videoUti.eyeAlign(fileName);
+        QString eyeSide = "right" ;
+        QString format = "mp4";
 
-        QMessageBox::information(this,tr("Info"),tr("影片已上傳"),QMessageBox::Ok);
+        if(fileName.contains("left")) eyeSide = "left";
+        if(fileName.contains("avi")) format = "avi";
+        ui_processForm->show();
+
+        ui_processForm->setHintText(tr("影片分割中"));
+
+        QEventLoop m_loop;
+
+        QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
+        ///
+        emit splitVideotoSegmant(fileName,3);
+
+        m_loop.exec();
+
+        qDebug()<<"finish";
+
+        QString result = m_uploadThread->getReturnText();
+
+        ui_processForm->hide();
+
+        ui->txtShow->appendPlainText(result);
+
     }
 }
 
@@ -1460,11 +1505,8 @@ void MainWindow::on_actio_video_set_triggered()
     this->ui_videoParam->show();
 }
 
-void MainWindow::on_btnROINUpload_clicked()
+void MainWindow::on_btnROINUpload_clicked() //ROI手動提取
 {
-    //check ROI x,y,width,height
-    //
-
     QString fileName = QFileDialog::getOpenFileName(this, tr("選擇影片檔"), "", tr("所有文件 (*.*)"));
 
     if (!fileName.isEmpty()) {
@@ -1473,5 +1515,112 @@ void MainWindow::on_btnROINUpload_clicked()
         QFileInfo base(fileName);
 
         qDebug()<< "filePath:"<<fileName <<"dir:"<<base.path()<<"fileName"<<base.fileName();
+
+        QString eyeSide = "right" ;
+        QString format = "mp4";
+
+        if(fileName.contains("left")) eyeSide = "left";
+        if(fileName.contains("avi")) format = "avi";
+
+        ui_processForm->show();
+
+        ui_processForm->setHintText(tr("ROI tracking"));
+
+        QEventLoop m_loop;
+
+        QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
+        ///
+        emit roiTrackingAndSplite(fileName);
+
+        m_loop.exec();
+
+        qDebug()<<"finish";
+
+        QString result = QString(tr("ROI提取結束，影片已分割")).append(m_uploadThread->getReturnText());
+
+        ui_processForm->hide();
+
+        ui->txtShow->appendPlainText(result);
+
+    }
+}
+
+void MainWindow::on_btnVideoSelTest_clicked()
+{
+
+    QString fileName = QFileDialog::getOpenFileName(this, tr("選擇影片"), "", tr("所有文件 (*.*);"));
+
+    if (!fileName.isEmpty()) {
+        // 選擇了文件，可以進行相應的操作
+
+        QFileInfo base(fileName);
+
+        qDebug()<< "fileName:"<<fileName <<"dir:"<<base.path();
+
+
+        ui_processForm->show();
+
+        ui_processForm->setHintText(tr("影片校正中"));
+
+        QEventLoop m_loop;
+
+        QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
+        QString eyeSide = "right" ;
+        QString format = "mp4";
+
+        if(fileName.contains("left")) eyeSide = "left";
+        if(fileName.contains("avi")) format = "avi";
+        emit adjustVideo(fileName,eyeSide,format);
+
+        m_loop.exec();
+
+        qDebug()<<"finish";
+
+        QString result = m_uploadThread->getReturnText();
+
+        ui_processForm->hide();
+
+        ui->txtShow->appendPlainText(result);
+
+    }
+}
+
+void MainWindow::on_btn_roiAuto_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("選擇影片檔"), "", tr("所有文件 (*.*)"));
+
+    if (!fileName.isEmpty()) {
+        // 選擇了文件，可以進行相應的操作
+
+        QFileInfo base(fileName);
+
+        qDebug()<< "filePath:"<<fileName <<"dir:"<<base.path()<<"fileName"<<base.fileName();
+
+        QString eyeSide = "right" ;
+        QString format = "mp4";
+
+        if(fileName.contains("left")) eyeSide = "left";
+        if(fileName.contains("avi")) format = "avi";
+
+        ui_processForm->show();
+
+        ui_processForm->setHintText(tr("ROI tracking"));
+
+        QEventLoop m_loop;
+
+        QObject::connect(m_uploadThread, SIGNAL(finished()), &m_loop, SLOT(quit()));
+        ///
+        emit autoROITrackingAndSplite(fileName);
+
+        m_loop.exec();
+
+        qDebug()<<"finish";
+
+        QString result = QString(tr("ROI提取結束，影片已分割")).append(m_uploadThread->getReturnText());
+
+        ui_processForm->hide();
+
+        ui->txtShow->appendPlainText(result);
+
     }
 }

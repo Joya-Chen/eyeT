@@ -89,10 +89,11 @@ public:
     QLabel *label_version;
     QPushButton *btnCameraStart;
     QPushButton *btnCameraStop;
-    QPushButton *btnVideoSeltoNolight;
     QPushButton *btnVideoSetting;
-    QPushButton *btnVideoSeltoCanny;
+    QPushButton *btnVideoSelTest;
     QPushButton *btnROINUpload;
+    QPushButton *btn_roiAuto;
+    QPushButton *btnVideoSeltoCanny;
     QSpacerItem *horizontalSpacer;
     QMenuBar *menuBar;
     QMenu *menu;
@@ -448,13 +449,6 @@ public:
 
         horizontalLayout_2->addWidget(btnCameraStop);
 
-        btnVideoSeltoNolight = new QPushButton(centralWidget);
-        btnVideoSeltoNolight->setObjectName(QStringLiteral("btnVideoSeltoNolight"));
-        btnVideoSeltoNolight->setEnabled(true);
-        btnVideoSeltoNolight->setFont(font7);
-
-        horizontalLayout_2->addWidget(btnVideoSeltoNolight);
-
         btnVideoSetting = new QPushButton(centralWidget);
         btnVideoSetting->setObjectName(QStringLiteral("btnVideoSetting"));
         btnVideoSetting->setEnabled(true);
@@ -462,21 +456,35 @@ public:
 
         horizontalLayout_2->addWidget(btnVideoSetting);
 
+        btnVideoSelTest = new QPushButton(centralWidget);
+        btnVideoSelTest->setObjectName(QStringLiteral("btnVideoSelTest"));
+        btnVideoSelTest->setEnabled(true);
+        btnVideoSelTest->setFont(font7);
+
+        horizontalLayout_2->addWidget(btnVideoSelTest);
+
+        btnROINUpload = new QPushButton(centralWidget);
+        btnROINUpload->setObjectName(QStringLiteral("btnROINUpload"));
+        btnROINUpload->setEnabled(true);
+        QFont font9;
+        font9.setPointSize(10);
+        btnROINUpload->setFont(font9);
+
+        horizontalLayout_2->addWidget(btnROINUpload);
+
+        btn_roiAuto = new QPushButton(centralWidget);
+        btn_roiAuto->setObjectName(QStringLiteral("btn_roiAuto"));
+        btn_roiAuto->setMinimumSize(QSize(0, 0));
+        btn_roiAuto->setFont(font9);
+
+        horizontalLayout_2->addWidget(btn_roiAuto);
+
         btnVideoSeltoCanny = new QPushButton(centralWidget);
         btnVideoSeltoCanny->setObjectName(QStringLiteral("btnVideoSeltoCanny"));
         btnVideoSeltoCanny->setEnabled(true);
         btnVideoSeltoCanny->setFont(font7);
 
         horizontalLayout_2->addWidget(btnVideoSeltoCanny);
-
-        btnROINUpload = new QPushButton(centralWidget);
-        btnROINUpload->setObjectName(QStringLiteral("btnROINUpload"));
-        btnROINUpload->setEnabled(false);
-        QFont font9;
-        font9.setPointSize(10);
-        btnROINUpload->setFont(font9);
-
-        horizontalLayout_2->addWidget(btnROINUpload);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -567,10 +575,11 @@ public:
         label_version->setText(QApplication::translate("MainWindow", "V2024.01.03.7", Q_NULLPTR));
         btnCameraStart->setText(QApplication::translate("MainWindow", "\351\226\213\345\247\213\346\223\267\345\217\226\345\275\261\345\203\217", Q_NULLPTR));
         btnCameraStop->setText(QApplication::translate("MainWindow", "camera stop", Q_NULLPTR));
-        btnVideoSeltoNolight->setText(QApplication::translate("MainWindow", "\351\201\270\345\217\226\346\252\224\346\241\210\345\216\273\351\231\244\344\272\256\351\273\236", Q_NULLPTR));
         btnVideoSetting->setText(QApplication::translate("MainWindow", "\350\256\200\345\217\226\347\233\270\346\251\237\350\263\207\350\250\212", Q_NULLPTR));
-        btnVideoSeltoCanny->setText(QApplication::translate("MainWindow", "\351\201\270\345\217\226\346\252\224\346\241\210\345\201\265\346\270\254\351\202\212\347\267\243", Q_NULLPTR));
-        btnROINUpload->setText(QApplication::translate("MainWindow", "ROI\346\217\220\345\217\226\344\270\246\344\270\212\345\202\263", Q_NULLPTR));
+        btnVideoSelTest->setText(QApplication::translate("MainWindow", "\346\240\241\346\255\243/\347\247\273\351\231\244\347\234\250\347\234\274", Q_NULLPTR));
+        btnROINUpload->setText(QApplication::translate("MainWindow", "ROI\346\217\220\345\217\226(\346\211\213\345\213\225)", Q_NULLPTR));
+        btn_roiAuto->setText(QApplication::translate("MainWindow", "ROI\346\217\220\345\217\226(\350\207\252\345\213\225)", Q_NULLPTR));
+        btnVideoSeltoCanny->setText(QApplication::translate("MainWindow", "\345\210\206\345\211\262\345\275\261\347\211\207(3s)", Q_NULLPTR));
         menu->setTitle(QApplication::translate("MainWindow", "\344\270\212\345\202\263\350\250\255\345\256\232", Q_NULLPTR));
         menu_2->setTitle(QApplication::translate("MainWindow", "\345\275\261\347\211\207\346\240\274\345\274\217", Q_NULLPTR));
         menu_3->setTitle(QApplication::translate("MainWindow", "\350\252\252\346\230\216", Q_NULLPTR));

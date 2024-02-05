@@ -46,6 +46,64 @@ public slots:
 
         emit finished();
     }
+
+    void uploadParamInitialSet(QString url, QString pwd, QString dataInfo, int timeout)
+    {
+        qDebug()<<"uploadParamInitialSet:"<<url;
+        m_uploadCtrl->setUrl(url);
+        m_uploadCtrl->setPwd(pwd);
+        m_uploadCtrl->setDataInfo(dataInfo);
+        m_uploadCtrl->setTimeout(timeout);
+
+    }
+
+    void adjustVideo(QString src, QString eyeSide, QString format)
+    {
+        m_transReturnText = m_uploadCtrl->removeBlink(src, eyeSide, format);
+
+        emit finished();
+    }
+
+    void autoROITrackingAndSplite(QString src)
+    {
+        m_transReturnText = m_uploadCtrl->trackingROIandsave(src);
+
+        emit finished();
+    }
+
+    void roiTrackingAndSplite(QString src)
+    {
+        m_transReturnText = m_uploadCtrl->trackingROIandsave(src,"false");
+
+        emit finished();
+    }
+
+    void splitVideotoSegmant(QString src,int sec)
+    {
+        m_uploadCtrl->splitVideoSegments(src,sec);
+
+        m_transReturnText = QString(tr("分割完畢"));
+        emit finished();
+    }
+
+    void autoProcessVideo(QString src, QString eyeSide, QString format)
+    {
+        m_transReturnText = m_uploadCtrl->removeBlink(src, eyeSide, format).simplified();
+        qDebug()<<"removeblink path:"<<m_transReturnText;
+        m_transReturnText = m_uploadCtrl->trackingROIandsave(m_transReturnText);
+
+        emit finished();
+    }
+
+    void batchvideoUploadTrans(QStringList filePaths, QString outPath)
+    {
+        m_transReturnText = m_uploadCtrl->uploadVideo(filePaths,outPath);
+
+        qDebug()<<"transaction end";
+
+        emit finished();
+    }
+
 signals:
     void finished();
 

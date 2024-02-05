@@ -3,5 +3,6 @@
         <file>deepicon.png</file>
         <file>deepLogo_s.png</file>
         <file>deepicon.ico</file>
+        <file>Loading.gif</file>
     </qresource>
 </RCC>
