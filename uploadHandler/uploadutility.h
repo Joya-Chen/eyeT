@@ -78,6 +78,8 @@ private :
 
     bool addToExcel(QList<EYEData> data);
 
+    QString doDataCalculation(QList<EYEData> data);
+
     bool moveFileToSelectFolder(QString file, QString folderName);
 
     QString getUrl();

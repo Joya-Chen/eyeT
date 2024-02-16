@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling,true);
 #ifdef SELF_TEST
-    //qInstallMessageHandler(customMessageHandler);
+    qInstallMessageHandler(customMessageHandler);
 #endif
     QApplication a(argc, argv);
 

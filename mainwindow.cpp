@@ -31,7 +31,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->loadVConfigAndSet();
 
-    m_version = "v2024.02.04.13";
+    m_version = "v2024.02.05.14";
+
+    m_releaseNote = QString::fromUtf8("加入數據統計");
 
     this->initialElementState();
 
@@ -155,7 +157,8 @@ bool MainWindow::doExVideo(int bitrate_M,QString vPath, QString &oPath)
 
 QString MainWindow::getVersion()
 {
-    return m_version;
+    QString returnNote = QString("%1\n%2").arg(m_version).arg(m_releaseNote);
+    return returnNote;
 }
 
 void MainWindow::processFrameAndUpdateGUI()
@@ -915,7 +918,7 @@ void MainWindow::doFilesUpload(QStringList fileNames)
             if (!fileName.isEmpty()) {
                 // 選擇了文件，可以進行相應的操作
                 QFileInfo base(fileName);
-                if(base.size()<400000)
+                if(base.size()<300000)
                 {
                     fileNames[i] = "";
                     //qDebug()<<"delete size too small file:index "<<i<<":"<<fileName;

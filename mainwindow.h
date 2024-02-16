@@ -116,6 +116,7 @@ private:
     int detectCameraCount();
     const int recordTime = 30;
     QString m_version ;
+    QString m_releaseNote;
 
     void loadConfigAndSet();
     void loadVConfigAndSet();
