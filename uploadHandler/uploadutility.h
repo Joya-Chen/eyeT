@@ -6,6 +6,8 @@
 #include "Python.h"
 #include <QDebug>
 #include <QAxObject>
+#include "cls_global.h"
+
 #define PWD = "jihwosh2oh"
 class EYEData
 {

@@ -26,6 +26,8 @@
 #include "settingform.h"
 #include "videoparam.h"
 #include "processform.h"
+#include "cls_global.h"
+
 #define eye_source_xml_addr "haarcascade_eye.xml"
 using namespace cv;
 
@@ -80,6 +82,9 @@ public:
     bool doExVideo(int bitrate_M,QString vPath, QString &oPath);
     QString getVersion();
 
+protected:
+    void changeEvent(QEvent *e) override;
+
 private:
     Ui::MainWindow *ui;
     Dialog *ui_aboutDialog;
@@ -118,10 +123,11 @@ private:
     QString m_version ;
     QString m_releaseNote;
 
+
     void loadConfigAndSet();
     void loadVConfigAndSet();
 
-
+    void initMenu();
     void initialElementState();
     void setConfig();
     void startToSaveVideo();
@@ -181,6 +187,9 @@ private slots:
     void on_btnROINUpload_clicked();
     void on_btnVideoSelTest_clicked();
     void on_btn_roiAuto_clicked();
+    void on_actionchinese_triggered();
+    void on_actionEnglish_triggered();
+    void on_actionShowDetail_triggered();
 };
 
 #endif // MAINWINDOW_H

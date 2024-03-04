@@ -7,6 +7,10 @@
 #include <QSettings>
 #include <QProcess>
 #include <QAxObject>
+#include <QTranslator>
+
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -31,9 +35,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->loadVConfigAndSet();
 
-    m_version = "v2024.02.05.14";
+    m_version = "v2024.02.29.18";
 
-    m_releaseNote = QString::fromUtf8("加入數據統計");
+    m_releaseNote = QString::fromUtf8("");
+
+    this->initMenu();
 
     this->initialElementState();
 
@@ -66,15 +72,21 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui_videoParam,SIGNAL(paramUpdate(QString,int,int)),this,SLOT(updateVideoSettingParam(QString,int,int)));
 
     this->detectCamera();
-
-
 }
 
 MainWindow::~MainWindow()
 {
+
+    m_uploadThread->deleteLater();
+
+
     delete ui;
     delete ui_videoParam;
     delete ui_settingForm;
+    delete ui_processForm;
+    delete ui_aboutDialog;
+    delete m_uploadThread;
+
 }
 bool MainWindow::openCamera(int cameraIndex)
 {
@@ -130,7 +142,7 @@ void MainWindow::detectCamera()
         }
     }
     else{
-        ui->txtShow->appendPlainText("errot: no camera detected.Please press refresh button.");
+        ui->txtShow->appendPlainText("error: no camera detected.Please press refresh button.");
 
         return ;
     }
@@ -157,8 +169,22 @@ bool MainWindow::doExVideo(int bitrate_M,QString vPath, QString &oPath)
 
 QString MainWindow::getVersion()
 {
-    QString returnNote = QString("%1\n%2").arg(m_version).arg(m_releaseNote);
+    QString returnNote = QString("%1%2").arg(m_version).arg(m_releaseNote);
     return returnNote;
+}
+
+void MainWindow::changeEvent(QEvent *e)
+{
+    QWidget::changeEvent(e);
+        switch (e->type())
+        {
+           case QEvent::LanguageChange:
+                qDebug()<<"MainWindow::LanguageChange";
+                //還有其他手工更新界面的內容
+            break;
+           default:
+            break;
+        }
 }
 
 void MainWindow::processFrameAndUpdateGUI()
@@ -277,7 +303,7 @@ void MainWindow::saveRVideoEnd(){
 
     ui->btnOpenFolder->setEnabled(true);
 
-    ui->btnCameraStart_r->setText("重新採樣右眼");
+    ui->btnCameraStart_r->setText(tr("重新採樣右眼"));
 
     ui->comboBox_camList->setEnabled(true);
 
@@ -306,6 +332,16 @@ void MainWindow::saveRVideoEnd(){
     qDebug()<<"finish";
 
     QString returnText = m_uploadThread->getReturnText();
+
+    if(returnText.contains("-1"))
+    {
+        ui_processForm->hide();
+
+        QMessageBox::information(this,tr("Info"),tr("取用影格太少，請重新量測!"),QMessageBox::Ok);
+
+        return ;
+
+    }
 
     QDir dir(m_testerData.m_testerPath);
 
@@ -361,7 +397,7 @@ void MainWindow::saveLVideoEnd()
 
     m_testerData.m_videoLeftFinished = true;
 
-    ui->btnCameraStart_l->setText("重新取樣左眼");
+    ui->btnCameraStart_l->setText(tr("重新取樣左眼"));
 
     ui->comboBox_camList->setEnabled(true);
 
@@ -387,6 +423,16 @@ void MainWindow::saveLVideoEnd()
     qDebug()<<"finish";
 
     QString returnText = m_uploadThread->getReturnText();
+
+    if(returnText.contains("-1"))
+    {
+        ui_processForm->hide();
+
+        QMessageBox::information(this,tr("Info"),tr("取用影格太少，請重新量測!"),QMessageBox::Ok);
+
+        return ;
+
+    }
 
     QDir dir(m_testerData.m_testerPath);
 
@@ -418,7 +464,7 @@ void MainWindow::saveLVideoEnd()
 void MainWindow::setCountdownText()
 {
     m_countdown-- ;
-    ui->label_showInfo->setText(QString("影像擷取中 倒數 %1").arg(m_countdown));
+    ui->label_showInfo->setText(QString(tr("影像擷取中 倒數 %1")).arg(m_countdown));
 
     if(m_countdown == 0) m_countdownTimer->stop();
 
@@ -426,7 +472,7 @@ void MainWindow::setCountdownText()
 
 void MainWindow::uploadDone()
 {
-    ui->txtShow->appendPlainText("檔案上傳完成");
+    ui->txtShow->appendPlainText(tr("檔案上傳完成"));
     ui->txtShow->appendPlainText("\"Executiontime\":\"0.0\",\n"
                                  "\"HW\":\"NAN\",\n"
                                  "\"ID_NO\":\"test_case\",\n"
@@ -556,6 +602,20 @@ void MainWindow::loadVConfigAndSet()
 
 }
 
+void MainWindow::initMenu()
+{
+    ui->actionEnglish->setIcon(QIcon("./—Pngtree—mathematical symbol icon free illustration_4663861.png"));
+    ui->actionchinese->setIcon(QIcon("./—Pngtree—mathematical symbol icon free illustration_4663861.png"));
+    ui->actionShowDetail->setIcon(QIcon("./—Pngtree—mathematical symbol icon free illustration_4663861.png"));
+
+    ui->actionEnglish->setIconVisibleInMenu(true);
+    ui->actionchinese->setIconVisibleInMenu(false);
+    ui->actionShowDetail->setIconVisibleInMenu(false);
+
+    CLS_GLOBAL::hideUploadDetail = true;
+
+}
+
 void MainWindow::initialElementState()
 {
 #ifdef SELF_TEST
@@ -563,11 +623,30 @@ void MainWindow::initialElementState()
 
     ui->btnVideoSetting->setEnabled(true);
 
+    ui->btnVideoSeltoCanny->setEnabled(true);
+
+    ui->btnCameraStop->setEnabled(true);
+
+    ui->btnVideoSelTest->setEnabled(true);
+
+    ui->btnROINUpload->setEnabled(true);
+
+    ui->btn_roiAuto->setEnabled(true);
 
 #else
     ui->btnCameraStart->setHidden(true);
 
     ui->btnVideoSetting->setHidden(true);
+
+    ui->btnVideoSeltoCanny->setHidden(true);
+
+    ui->btnCameraStop->setHidden(true);
+
+    ui->btnVideoSelTest->setHidden(true);
+
+    ui->btnROINUpload->setHidden(true);
+
+    ui->btn_roiAuto->setHidden(true);
 
 #endif
 
@@ -597,13 +676,8 @@ void MainWindow::initialElementState()
 
     ui->label_version->setText(this->getVersion());
 
-    ui->btnVideoSeltoCanny->setEnabled(true);
-
-    ui->btnCameraStop->setEnabled(true);
-
-    ui->btnVideoSelTest->setEnabled(true);
-
     ui->btnVideoSelUpload->setEnabled(true);
+
 }
 
 void MainWindow::setConfig(){
@@ -908,8 +982,18 @@ void MainWindow::doFilesUpload(QStringList fileNames)
 
     ui_processForm->setHintText(tr("檔案上傳中"));
 
+     if (fileNames.isEmpty())
+     {
+         ui_processForm->hide();
+
+         QMessageBox::information(this,tr("Info"),tr("取用影格太少，請重新量測!"),QMessageBox::Ok);
+
+         return ;
+     }
+    /*
     //qDebug()<<"before del:"<<fileNames ;
     if (!fileNames.isEmpty()) {
+
         // 選擇了文件，處理文件列表
         int i = 0;
         foreach (const QString &fileName, fileNames) {
@@ -931,13 +1015,14 @@ void MainWindow::doFilesUpload(QStringList fileNames)
 
         fileNames.removeAll("");
         //qDebug()<<"after del:"<<fileNames ;
+
     }
     else {
-        //ui->txtShow->appendPlainText(tr("找不到檔案"));
+        ui->txtShow->appendPlainText(tr("No file to upload."));
         ui_processForm->hide();
         return ;
 
-    }
+    }*/
 
     if(fileNames.size() == 1)
     {
@@ -961,16 +1046,17 @@ void MainWindow::doFilesUpload(QStringList fileNames)
 
         QString result = m_uploadThread->getReturnText();
 
-        ui->txtShow->appendPlainText(QString("上傳完畢\n結果:\n" + result));
+        ui->txtShow->appendPlainText(result);
 
-        if(result.contains("失敗"))
+        if(result.contains(tr("失敗")))
         {
             ui_processForm->hide();
 
             return ;
         }
 
-        ui->txtShow->appendPlainText(QString("自動轉存excel done\n"));
+        if(!CLS_GLOBAL::hideUploadDetail)
+            ui->txtShow->appendPlainText(QString(tr("自動轉存excel done\n")));
 
         ui_processForm->hide();
 
@@ -981,7 +1067,8 @@ void MainWindow::doFilesUpload(QStringList fileNames)
 
     QString outTxtPath = QString("%1/%2").arg(videoBase.path()).arg("out.txt");
 
-    ui->txtShow->appendPlainText(tr("測試上傳%1內文件\n回傳文件%2\n開始上傳...").arg(videoBase.path()).arg(outTxtPath));
+    if(!CLS_GLOBAL::hideUploadDetail)
+        ui->txtShow->appendPlainText(tr("上傳%1").arg(videoBase.path()));
 
     ui_processForm->setHintText(tr("上傳中"));
 
@@ -999,9 +1086,9 @@ void MainWindow::doFilesUpload(QStringList fileNames)
 
     QString result = m_uploadThread->getReturnText();
 
-    ui->txtShow->appendPlainText(QString("上傳完畢\n結果:\n" + result));
+    ui->txtShow->appendPlainText(tr("上傳完畢\n結果:\n") + result);
 
-    if(result.contains("失敗"))
+    if(result.contains(tr("失敗")))
     {
         ui_processForm->hide();
 
@@ -1010,7 +1097,8 @@ void MainWindow::doFilesUpload(QStringList fileNames)
         return ;
     }
 
-    ui->txtShow->appendPlainText(QString("自動轉存excel done\n"));
+    if(!CLS_GLOBAL::hideUploadDetail)
+        ui->txtShow->appendPlainText(QString(tr("自動轉存excel done\n")));
 
     ui_processForm->hide();
 
@@ -1289,7 +1377,7 @@ void MainWindow::on_btnBuildTester_clicked()
     QDir dir;
 
     if (dir.mkdir(m_todayFolder)) { //建立mydir資料夾
-        ui->txtShow->appendPlainText(QString(m_todayFolder) +" : foler successfully created");
+        ui->txtShow->appendPlainText(QString(m_todayFolder) +" : folder created");
     }
 
     QDir testerDir = QString(QDir::currentPath() +"//" + m_todayFolder );
@@ -1307,7 +1395,7 @@ void MainWindow::on_btnBuildTester_clicked()
     m_testerData.m_testerPath = QString(QDir::currentPath()+"/"+m_todayFolder+"/"+m_testerData.m_NameNo);
 
     if (dir.mkpath(m_testerData.m_testerPath)) { //建立mydir資料夾
-        //ui->txtShow->appendPlainText(QString(m_testerData.m_testerPath) +" : foler successfully created");
+        //ui->txtShow->appendPlainText(QString(m_testerData.m_testerPath) +" : folder created");
         ui->txtShow->appendPlainText(QString(tr("已建立No %1資料夾").arg(m_testerData.m_NameNo)));
 
     }
@@ -1353,7 +1441,7 @@ void MainWindow::on_btnCameraStart_r_clicked()
 
     m_countdownTimer->start(1000);
 
-    ui->label_showInfo->setText(QString("影像擷取中 倒數 %1").arg(m_countdown));
+    ui->label_showInfo->setText(tr("影像擷取中\n倒數 %1").arg(m_countdown));
 }
 
 void MainWindow::on_btnCameraStart_l_clicked()
@@ -1387,7 +1475,7 @@ void MainWindow::on_btnCameraStart_l_clicked()
 
     m_countdownTimer->start(1000);
 
-    ui->label_showInfo->setText(QString("影像擷取中 倒數 %1").arg(m_countdown));
+    ui->label_showInfo->setText(tr("影像擷取中\n倒數 %1").arg(m_countdown));
 }
 
 
@@ -1412,7 +1500,7 @@ void MainWindow::on_btnVideoSetting_clicked()
 
 void MainWindow::on_btnVideoSeltoCanny_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("選擇影片"), "", tr("所有文件 (*.*);"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("選擇影片"), "", tr("所有文件 (*.*)"));
 
     if (!fileName.isEmpty()) {
         // 選擇了文件，可以進行相應的操作
@@ -1626,4 +1714,65 @@ void MainWindow::on_btn_roiAuto_clicked()
         ui->txtShow->appendPlainText(result);
 
     }
+}
+
+void MainWindow::on_actionchinese_triggered()
+{
+
+    if (CLS_GLOBAL::translator != NULL)
+    {
+        qApp->removeTranslator(CLS_GLOBAL::translator);
+        delete CLS_GLOBAL::translator;
+        CLS_GLOBAL::translator = NULL;
+    }
+    CLS_GLOBAL::translator = new QTranslator;
+    CLS_GLOBAL::translator->load("./Language/eyeT_zh_TW.qm");
+    qApp->installTranslator(CLS_GLOBAL::translator);
+
+
+    ui->actionEnglish->setIconVisibleInMenu(false);
+
+    ui->actionchinese->setIconVisibleInMenu(true);
+
+    ui->retranslateUi(this);//這裡實現語言翻譯器的更新
+}
+
+void MainWindow::on_actionEnglish_triggered()
+{
+    if (CLS_GLOBAL::translator != NULL)
+    {
+        qApp->removeTranslator(CLS_GLOBAL::translator);
+        delete CLS_GLOBAL::translator;
+        CLS_GLOBAL::translator = NULL;
+    }
+    CLS_GLOBAL::translator = new QTranslator;
+    CLS_GLOBAL::translator->load("./Language/eyeT_en.qm");
+    qApp->installTranslator(CLS_GLOBAL::translator);
+
+    ui->actionEnglish->setIconVisibleInMenu(true);
+
+    ui->actionchinese->setIconVisibleInMenu(false);
+
+    ui->retranslateUi(this);//這裡實現語言翻譯器的更新
+}
+
+void MainWindow::on_actionShowDetail_triggered()
+{
+    bool iconVisible = ui->actionShowDetail->isIconVisibleInMenu();
+
+    if(iconVisible)
+    {
+        ui->actionShowDetail->setIconVisibleInMenu(false);
+
+        CLS_GLOBAL::hideUploadDetail = true;
+    }
+    else
+    {
+        ui->actionShowDetail->setIconVisibleInMenu(true);
+
+        CLS_GLOBAL::hideUploadDetail = false;
+    }
+
+
+    //update show detail
 }

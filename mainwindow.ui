@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1208</width>
-    <height>927</height>
+    <width>1246</width>
+    <height>928</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -18,7 +18,8 @@
   </property>
   <property name="font">
    <font>
-    <family>微軟正黑體</family>
+    <family>Microsoft JhengHei UI</family>
+    <pointsize>9</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -60,9 +61,10 @@
               </property>
               <property name="font">
                <font>
-                <family>微軟正黑體</family>
-                <pointsize>10</pointsize>
+                <family>Segoe UI</family>
+                <pointsize>11</pointsize>
                 <weight>75</weight>
+                <italic>false</italic>
                 <bold>true</bold>
                </font>
               </property>
@@ -86,10 +88,11 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>Arial</family>
-                  <pointsize>10</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
+                  <family>Segoe UI</family>
+                  <pointsize>9</pointsize>
+                  <weight>50</weight>
+                  <italic>false</italic>
+                  <bold>false</bold>
                  </font>
                 </property>
                 <property name="editable">
@@ -113,10 +116,11 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>Arial Black</family>
-                  <pointsize>10</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
+                  <family>Segoe UI</family>
+                  <pointsize>9</pointsize>
+                  <weight>50</weight>
+                  <italic>false</italic>
+                  <bold>false</bold>
                  </font>
                 </property>
                 <property name="text">
@@ -141,8 +145,9 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>Arial</family>
-                  <pointsize>8</pointsize>
+                  <family>Segoe UI</family>
+                  <pointsize>9</pointsize>
+                  <italic>false</italic>
                  </font>
                 </property>
                </widget>
@@ -157,10 +162,11 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>微軟正黑體</family>
-                  <pointsize>10</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
+                  <family>Segoe UI</family>
+                  <pointsize>9</pointsize>
+                  <weight>50</weight>
+                  <italic>false</italic>
+                  <bold>false</bold>
                  </font>
                 </property>
                 <property name="text">
@@ -301,8 +307,8 @@
               </property>
               <property name="font">
                <font>
-                <family>Arial</family>
-                <pointsize>10</pointsize>
+                <family>Segoe UI</family>
+                <pointsize>9</pointsize>
                 <weight>50</weight>
                 <bold>false</bold>
                 <stylestrategy>PreferAntialias</stylestrategy>
@@ -318,13 +324,6 @@
               <property name="frameShadow">
                <enum>QFrame::Plain</enum>
               </property>
-              <property name="html">
-               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'微軟正黑體'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
              </widget>
             </item>
             <item>
@@ -337,10 +336,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="font">
                <font>
-                <family>微軟正黑體</family>
-                <pointsize>10</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
+                <family>Segoe UI</family>
+                <pointsize>9</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
                </font>
               </property>
               <property name="text">
@@ -358,8 +357,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="font">
                <font>
-                <family>微軟正黑體</family>
-                <pointsize>10</pointsize>
+                <family>Segoe UI</family>
+                <pointsize>9</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
                </font>
               </property>
               <property name="text">
@@ -377,8 +378,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="font">
                <font>
-                <family>微軟正黑體</family>
-                <pointsize>10</pointsize>
+                <family>Segoe UI</family>
+                <pointsize>9</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
                </font>
               </property>
               <property name="text">
@@ -419,10 +422,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="font">
                <font>
-                <family>Arial Black</family>
-                <pointsize>10</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
+                <family>Segoe UI</family>
+                <pointsize>9</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
                </font>
               </property>
               <property name="midLineWidth">
@@ -449,8 +452,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="font">
                <font>
-                <family>微軟正黑體</family>
-                <pointsize>10</pointsize>
+                <family>Segoe UI</family>
+                <pointsize>9</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
                </font>
               </property>
               <property name="text">
@@ -468,8 +473,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="font">
                <font>
-                <family>微軟正黑體</family>
-                <pointsize>10</pointsize>
+                <family>Segoe UI</family>
+                <pointsize>9</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
                </font>
               </property>
               <property name="text">
@@ -487,8 +494,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="font">
                <font>
-                <family>微軟正黑體</family>
-                <pointsize>10</pointsize>
+                <family>Segoe UI</family>
+                <pointsize>9</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
                </font>
               </property>
               <property name="text">
@@ -506,8 +515,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="font">
                <font>
-                <family>微軟正黑體</family>
-                <pointsize>10</pointsize>
+                <family>Segoe UI</family>
+                <pointsize>9</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
                </font>
               </property>
               <property name="text">
@@ -538,8 +549,8 @@ p, li { white-space: pre-wrap; }
        <widget class="QPlainTextEdit" name="txtShow">
         <property name="font">
          <font>
-          <family>微軟正黑體</family>
-          <pointsize>10</pointsize>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
        </widget>
@@ -637,11 +648,11 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="font">
            <font>
-            <family>Arial</family>
-            <pointsize>9</pointsize>
-            <weight>75</weight>
+            <family>Segoe UI</family>
+            <pointsize>8</pointsize>
+            <weight>50</weight>
             <italic>true</italic>
-            <bold>true</bold>
+            <bold>false</bold>
            </font>
           </property>
           <property name="text">
@@ -659,8 +670,8 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="font">
            <font>
-            <family>微軟正黑體</family>
-            <pointsize>10</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -672,8 +683,8 @@ p, li { white-space: pre-wrap; }
          <widget class="QPushButton" name="btnCameraStop">
           <property name="font">
            <font>
-            <family>微軟正黑體</family>
-            <pointsize>10</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -688,8 +699,8 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="font">
            <font>
-            <family>微軟正黑體</family>
-            <pointsize>10</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -704,8 +715,8 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="font">
            <font>
-            <family>微軟正黑體</family>
-            <pointsize>10</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -720,7 +731,8 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="font">
            <font>
-            <pointsize>10</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -738,7 +750,8 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="font">
            <font>
-            <pointsize>10</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -753,8 +766,8 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="font">
            <font>
-            <family>微軟正黑體</family>
-            <pointsize>10</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -786,21 +799,23 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1208</width>
-     <height>28</height>
+     <width>1246</width>
+     <height>26</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>微軟正黑體</family>
-     <pointsize>10</pointsize>
+     <family>Segoe UI</family>
+     <pointsize>9</pointsize>
     </font>
    </property>
    <widget class="QMenu" name="menu">
     <property name="font">
      <font>
-      <family>微軟正黑體</family>
-      <pointsize>10</pointsize>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="title">
@@ -820,8 +835,8 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="font">
      <font>
-      <family>微軟正黑體</family>
-      <pointsize>10</pointsize>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
      </font>
     </property>
     <property name="title">
@@ -832,8 +847,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QMenu" name="menu_3">
     <property name="font">
      <font>
-      <family>微軟正黑體</family>
-      <pointsize>10</pointsize>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
      </font>
     </property>
     <property name="title">
@@ -841,15 +856,54 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="action_about"/>
    </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="title">
+     <string>其他設定</string>
+    </property>
+    <widget class="QMenu" name="menu_5">
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="title">
+      <string>語言</string>
+     </property>
+     <addaction name="actionchinese"/>
+     <addaction name="actionEnglish"/>
+    </widget>
+    <widget class="QMenu" name="menu_6">
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="title">
+      <string>數據</string>
+     </property>
+     <addaction name="actionShowDetail"/>
+    </widget>
+    <addaction name="menu_5"/>
+    <addaction name="menu_6"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
    <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="font">
     <font>
-     <family>微軟正黑體</family>
-     <pointsize>10</pointsize>
+     <family>Segoe UI</family>
+     <pointsize>9</pointsize>
     </font>
    </property>
    <attribute name="toolBarArea">
@@ -859,7 +913,14 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </attribute>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </widget>
   <action name="action30s">
    <property name="text">
     <string>30s</string>
@@ -872,6 +933,12 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string> 關於eyeAnalysis</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft JhengHei UI</family>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="action10s_2">
@@ -909,6 +976,14 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>設定</string>
    </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>9</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
   </action>
   <action name="actio_video_set">
    <property name="enabled">
@@ -916,6 +991,54 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>設定</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionchinese">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>中文</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft JhengHei UI</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionEnglish">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>English</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft JhengHei UI</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionShowDetail">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>顯示上傳筆數</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
  </widget>

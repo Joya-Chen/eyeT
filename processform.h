@@ -17,6 +17,9 @@ public:
 
     void setHintText(QString hintText);
 
+protected:
+    void changeEvent(QEvent *e) override;
+
 private:
     Ui::processForm *ui;
 };

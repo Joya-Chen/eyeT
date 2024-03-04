@@ -25,6 +25,21 @@ void SettingForm::setDefault(QString url, QString pwd, QString dataInfo, int tim
     ui->lineEdit_timeout->setText(QString::number(timeout));
 }
 
+void SettingForm::changeEvent(QEvent *e)
+{
+    QWidget::changeEvent(e);
+        switch (e->type())
+        {
+           case QEvent::LanguageChange:
+                qDebug()<<"settingForm::LanguageChange";
+                //ui->retranslateUi(this);
+                //還有其他手工更新界面的內容
+            break;
+           default:
+            break;
+        }
+}
+
 void SettingForm::on_btn_closeSet_clicked()
 {
     //qDebug()<<ui->lineEdit_server->text()<<ui->lineEdit_pwd->text()<<ui->lineEdit_param->text()<<ui->lineEdit_timeout->text();
@@ -40,10 +55,10 @@ void SettingForm::on_btn_closeSet_clicked()
 
     //qDebug()<<ui->btn_editServerURL->text()<<ui->btn_editPwd->text()<<ui->btn_editParam->text()<<ui->btn_editTimeout->text();
 
-    if(ui->btn_editServerURL->text()=="確定" ||
-            ui->btn_editPwd->text()=="確定" ||
-            ui->btn_editParam->text()=="確定" ||
-            ui->btn_editTimeout->text()=="確定" )
+    if(ui->btn_editServerURL->text()==QString(QString(tr("確定"))) ||
+            ui->btn_editPwd->text()==QString(QString(tr("確定"))) ||
+            ui->btn_editParam->text()==QString(tr("確定")) ||
+            ui->btn_editTimeout->text()==QString(tr("確定")) )
     {
         QMessageBox::information(this,tr("Info"),tr("修改後需按下確定"),QMessageBox::Ok);
 
@@ -65,49 +80,49 @@ void SettingForm::initialParam()
 
 void SettingForm::on_btn_editServerURL_clicked()
 {
-    if(ui->btn_editServerURL->text()=="修改"){
+    if(ui->btn_editServerURL->text()==QString(tr("修改"))){
         ui->lineEdit_server->setReadOnly(false);
-        ui->btn_editServerURL->setText("確定");
+        ui->btn_editServerURL->setText(QString(tr("確定")));
     }
     else{
         ui->lineEdit_server->setReadOnly(true);
-        ui->btn_editServerURL->setText("修改");
+        ui->btn_editServerURL->setText(QString(tr("修改")));
     }
 
 }
 
 void SettingForm::on_btn_editPwd_clicked()
 {
-    if(ui->btn_editPwd->text()=="修改"){
+    if(ui->btn_editPwd->text()==QString(tr("修改"))){
         ui->lineEdit_pwd->setReadOnly(false);
-        ui->btn_editPwd->setText("確定");
+        ui->btn_editPwd->setText(QString(tr("確定")));
     }
     else{
         ui->lineEdit_pwd->setReadOnly(true);
-        ui->btn_editPwd->setText("修改");
+        ui->btn_editPwd->setText(tr("修改"));
     }
 }
 
 void SettingForm::on_btn_editParam_clicked()
 {
-    if(ui->btn_editParam->text()=="修改"){
+    if(ui->btn_editParam->text()==QString(tr("修改"))){
         ui->lineEdit_param->setReadOnly(false);
-        ui->btn_editPwd->setText("確定");
+        ui->btn_editParam->setText(QString(tr("確定")));
     }
     else{
         ui->lineEdit_param->setReadOnly(true);
-        ui->btn_editParam->setText("修改");
+        ui->btn_editParam->setText(QString(tr("修改")));
     }
 }
 
 void SettingForm::on_btn_editTimeout_clicked()
 {
-    if(ui->btn_editTimeout->text()=="修改"){
+    if(ui->btn_editTimeout->text()==QString(tr("修改"))){
         ui->lineEdit_timeout->setReadOnly(false);
-        ui->btn_editTimeout->setText("確定");
+        ui->btn_editTimeout->setText(QString(tr("確定")));
     }
     else{
         ui->lineEdit_timeout->setReadOnly(true);
-        ui->btn_editTimeout->setText("修改");
+        ui->btn_editTimeout->setText(QString(tr("修改")));
     }
 }

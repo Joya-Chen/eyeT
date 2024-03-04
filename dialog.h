@@ -16,6 +16,8 @@ public:
     ~Dialog();
 
     void setVersion(QString version);
+protected:
+    void changeEvent(QEvent *e) override;
 
 private slots:
     void on_btn_ok_clicked();

@@ -111,23 +111,32 @@ QString uploadUtility::uploadVideo(QStringList filepaths, QString outPath)
         dataCal = this->doDataCalculation(m_eyeDataList);
 
 
-    QString result = QString("上傳檔案: %1筆\n============\n分析成功: %2筆\n分析失敗: %3\n500 Internet error: %4\nother httpError: %5\n============\n%6\n")
-            .arg(m_uploadFileCount)
-            .arg(m_success_ok)
-            .arg(m_success_fail)
-            .arg(m_http500Error)
-            .arg(m_otherhttpError)
-            .arg(dataCal);
+    QString result;
+
+    if(CLS_GLOBAL::hideUploadDetail)
+    {
+        result = QString(tr("%1\n============\n"))
+                .arg(dataCal);
+    }
+    else{
+        result = QString(tr("上傳檔案: %1筆\n============\n分析成功: %2筆\n分析失敗: %3\n500 Internet error: %4\nother httpError: %5\n============\n%6\n"))
+                .arg(m_uploadFileCount)
+                .arg(m_success_ok)
+                .arg(m_success_fail)
+                .arg(m_http500Error)
+                .arg(m_otherhttpError)
+                .arg(dataCal);
+    }
 
     QFile file(outPath);
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QTextStream out(&file);
-            out << result;
-            file.close();
-            qDebug() << "結果已寫入" << outPath;
-        } else {
-            qDebug() << "無法開啟" << outPath;
-        }
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << result;
+        file.close();
+        qDebug() << "結果已寫入" << outPath;
+    } else {
+        qDebug() << "無法開啟" << outPath;
+    }
 
     return result;
 
@@ -270,7 +279,7 @@ QString uploadUtility::parseResult(QString src,QString filepath, QString outPath
     if(err_rpt.error != QJsonParseError::NoError)
 
     {
-        return QString::fromUtf8("上傳失敗\n%1").arg(src);
+        return QString(tr("上傳失敗\n%1")).arg(src);
     }
     else    // JSON格式
     {
@@ -299,20 +308,20 @@ QString uploadUtility::parseResult(QString src,QString filepath, QString outPath
 
             if(Situation==0){
 
-                result = QString::fromUtf8("失敗");
+                result = QString(tr("失敗"));
             }
             else{
-                result = QString::fromUtf8("成功");
+                result = QString(tr("成功"));
             }
 
-            returnTxt = QString("%1\n%2\n%3\n%4\n%5\n%6\n%7\n%8\n%9")
-                    .arg(QString::fromUtf8("分析結果:")+ result)
-                    .arg(QString::fromUtf8("血氧值:") + S2.replace("[","").replace("]",""))
-                    .arg(QString::fromUtf8("心跳:") + bpm)
-                    .arg(QString::fromUtf8("乳酸值:") + LTv)
-                    .arg(QString::fromUtf8("舒張壓:" )+ bpv0)
-                    .arg(QString::fromUtf8("收縮壓:") + bpv1)
-                    .arg(QString::fromUtf8("血糖值:") + glu.replace("[","").replace("]",""));
+            returnTxt = QString("%1\n============\n%2\n%3\n%4\n%5\n%6\n%7\n%8\n%9\n============\n")
+                    .arg(QString(tr("分析結果:"))+ result)
+                    .arg(QString(tr("血氧值:")) + S2.replace("[","").replace("]",""))
+                    .arg(QString(tr("心跳:")) + bpm)
+                    .arg(QString(tr("乳酸值:")) + LTv)
+                    .arg(QString(tr("舒張壓:"))+ bpv0)
+                    .arg(QString(tr("收縮壓:")) + bpv1)
+                    .arg(QString(tr("血糖值:")) + glu.replace("[","").replace("]",""));
 
             data.Situation = result;
             data.S2 = S2;
@@ -350,20 +359,20 @@ QString uploadUtility::parseResult(QString src,QString filepath, QString outPath
 
             if(Situation.contains("0")){
 
-                result = QString::fromUtf8("失敗");
+                result = QString(tr("失敗"));
             }
             else{
-                result = QString::fromUtf8("成功");
+                result = QString(tr("成功"));
             }
 
-            returnTxt = QString("%1\n%2\n%3\n%4\n%5\n%6\n%7\n")
-                    .arg(QString::fromUtf8("分析結果:")+ result)
-                    .arg(QString::fromUtf8("血氧值:") + S2.replace("[","").replace("]",""))
-                    .arg(QString::fromUtf8("心跳:") + bpm)
-                    .arg(QString::fromUtf8("乳酸值:") + LTv)
-                    .arg(QString::fromUtf8("舒張壓:" )+ bpv0)
-                    .arg(QString::fromUtf8("收縮壓:") + bpv1)
-                    .arg(QString::fromUtf8("血糖值:") + glu.replace("[","").replace("]",""));
+            returnTxt = QString("%1\n============\n%2\n%3\n%4\n%5\n%6\n%7\n============\n")
+                    .arg(QString(tr("分析結果:"))+ result)
+                    .arg(QString(tr("血氧值:")) + S2.replace("[","").replace("]",""))
+                    .arg(QString(tr("心跳:")) + bpm)
+                    .arg(QString(tr("乳酸值:")) + LTv)
+                    .arg(QString(tr("舒張壓:"))+ bpv0)
+                    .arg(QString(tr("收縮壓:")) + bpv1)
+                    .arg(QString(tr("血糖值:")) + glu.replace("[","").replace("]",""));
 
             data.Situation = result;
             data.S2 = S2;
@@ -418,13 +427,13 @@ QString uploadUtility::parsebatchResult(QString src, QString filepath, QString o
         {
             m_http500Error ++;
             this->moveFileToSelectFolder(filepath, "500HttpError");
-            return QString::fromUtf8("上傳失敗\n原因:\n%1 :%2").arg("500HttpError").arg(src);
+            return QString(tr("上傳失敗\n原因:\n%1 :%2")).arg("500HttpError").arg(src);
         }
         else
         {
             m_otherhttpError ++;
             this->moveFileToSelectFolder(filepath, "OtherHttpError");
-            return QString::fromUtf8("上傳失敗\n原因:\n%1 :%2").arg("OtherHttpError").arg(src);
+            return QString(tr("上傳失敗\n原因:\n%1 :%2")).arg("OtherHttpError").arg(src);
         }
     }
     else    // JSON格式
@@ -464,14 +473,14 @@ QString uploadUtility::parsebatchResult(QString src, QString filepath, QString o
                 result = QString::fromUtf8("成功");
             }
 
-            returnTxt = QString("%1\n%2\n%3\n%4\n%5\n%6\n%7\n%8\n%9")
-                    .arg(QString::fromUtf8("分析結果:")+ result)
-                    .arg(QString::fromUtf8("血氧值:") + S2.replace("[","").replace("]",""))
-                    .arg(QString::fromUtf8("心跳:") + bpm)
-                    .arg(QString::fromUtf8("乳酸值:") + LTv)
-                    .arg(QString::fromUtf8("舒張壓:" )+ bpv0)
-                    .arg(QString::fromUtf8("收縮壓:") + bpv1)
-                    .arg(QString::fromUtf8("血糖值:") + glu.replace("[","").replace("]",""));
+            returnTxt = QString("%1\n============\n%2\n%3\n%4\n%5\n%6\n%7\n%8\n%9\n============\n")
+                    .arg(tr("分析結果:")+ result)
+                    .arg(tr("血氧值:") + S2.replace("[","").replace("]",""))
+                    .arg(tr("心跳:") + bpm)
+                    .arg(tr("乳酸值:") + LTv)
+                    .arg(tr("舒張壓:")+ bpv0)
+                    .arg(tr("收縮壓:") + bpv1)
+                    .arg(tr("血糖值:") + glu.replace("[","").replace("]",""));
 
             data.Situation = result;
             data.S2 = S2;
@@ -510,24 +519,24 @@ QString uploadUtility::parsebatchResult(QString src, QString filepath, QString o
             if(Situation.contains("0")){
 
                 m_success_fail ++;
-                result = QString::fromUtf8("失敗");
+                result = QString(tr("失敗"));
                 this->moveFileToSelectFolder(filepath, "AnalyzeFail");
                 return result;
             }
             else{
                 m_success_ok ++;
                 this->moveFileToSelectFolder(filepath, "Success");
-                result = QString::fromUtf8("成功");
+                result = QString(tr("成功"));
             }
 
-            returnTxt = QString("%1\n%2\n%3\n%4\n%5\n%6\n%7\n")
-                    .arg(QString::fromUtf8("分析結果:")+ result)
-                    .arg(QString::fromUtf8("血氧值:") + S2.replace("[","").replace("]",""))
-                    .arg(QString::fromUtf8("心跳:") + bpm)
-                    .arg(QString::fromUtf8("乳酸值:") + LTv)
-                    .arg(QString::fromUtf8("舒張壓:" )+ bpv0)
-                    .arg(QString::fromUtf8("收縮壓:") + bpv1)
-                    .arg(QString::fromUtf8("血糖值:") + glu.replace("[","").replace("]",""));
+            returnTxt = QString("%1\n\n============%2\n%3\n%4\n%5\n%6\n%7\n============\n")
+                    .arg(tr("分析結果:")+ result)
+                    .arg(tr("血氧值:") + S2.replace("[","").replace("]",""))
+                    .arg(tr("心跳:") + bpm)
+                    .arg(tr("乳酸值:") + LTv)
+                    .arg(tr("舒張壓:")+ bpv0)
+                    .arg(tr("收縮壓:") + bpv1)
+                    .arg(tr("血糖值:") + glu.replace("[","").replace("]",""));
 
             data.Situation = result;
             data.S2 = S2;
@@ -598,6 +607,8 @@ QString uploadUtility::trackingROIandsave(QString src, QString autoROI) //return
         arguments << src << eyeSide << format << autoROI <<"" ;
 
         QString program = QDir::currentPath().append("/tracking.exe");
+
+        qDebug()<<arguments;
 
         QString result = this->executeProcess(program,arguments);
 
@@ -879,364 +890,422 @@ QString uploadUtility::doDataCalculation(QList<EYEData> data)
     }
 
     // 使用std::sort函数排序
-       std::sort(S2.begin(), S2.end());
-       std::sort(bpm.begin(), bpm.end());
-       std::sort(LTv.begin(), LTv.end());
-       std::sort(bpv0.begin(), bpv0.end());
-       std::sort(bpv1.begin(), bpv1.end());
-       std::sort(glu.begin(), glu.end());
+    std::sort(S2.begin(), S2.end());
+    std::sort(bpm.begin(), bpm.end());
+    std::sort(LTv.begin(), LTv.end());
+    std::sort(bpv0.begin(), bpv0.end());
+    std::sort(bpv1.begin(), bpv1.end());
+    std::sort(glu.begin(), glu.end());
 
-       qDebug()<<S2 ;
-       qDebug()<<bpm;
-       qDebug()<<LTv;
-       qDebug()<<bpv0;
-       qDebug()<<bpv1;
-       qDebug()<<glu;
+    qDebug()<<S2 ;
+    qDebug()<<bpm;
+    qDebug()<<LTv;
+    qDebug()<<bpv0;
+    qDebug()<<bpv1;
+    qDebug()<<glu;
 
     if(dataSize>=12)
     {
         // 刪除最大和最小兩筆
-          for (int i = 0; i < 2; i++) {
-              S2.removeLast();
-              S2.removeFirst();
+        for (int i = 0; i < 2; i++) {
+            S2.removeLast();
+            S2.removeFirst();
 
-              bpm.removeLast();
-              bpm.removeFirst();
+            bpm.removeLast();
+            bpm.removeFirst();
 
-              LTv.removeLast();
-              LTv.removeFirst();
+            LTv.removeLast();
+            LTv.removeFirst();
 
-              bpv0.removeLast();
-              bpv0.removeFirst();
+            bpv0.removeLast();
+            bpv0.removeFirst();
 
-              bpv1.removeLast();
-              bpv1.removeFirst();
-          }
+            bpv1.removeLast();
+            bpv1.removeFirst();
+        }
 
-          // 刪除最大3筆
-            for (int i = 0; i < 3; i++) {
-                glu.removeLast();
+        // 刪除最大3筆
+        for (int i = 0; i < 3; i++) {
+            glu.removeLast();
+        }
+        glu.removeFirst();
+
+
+        //  計算剩下數值平均
+        int sum = 0;
+        for (int i : S2) {
+            sum += i;
+        }
+        int averageS2 = sum / S2.size();
+
+        sum = 0;
+        for (int i : bpm) {
+            sum += i;
+        }
+        int averageBpm = sum / bpm.size();
+
+        float sumLTv = 0.00 ;
+        for (float i : LTv) {
+            sumLTv += i;
+        }
+        float averageLTv = float(sumLTv / LTv.size());
+
+        sum = 0;
+        for (int i : bpv0) {
+            sum += i;
+        }
+        int averageBpv0 = sum / bpv0.size();
+
+        sum = 0;
+        for (int i : bpv1) {
+            sum += i;
+        }
+        int averageBpv1 = sum / bpv1.size();
+
+        sum = 0;
+        for (int i : glu) {
+            sum += i;
+        }
+        int averageGlu = sum / glu.size();
+
+        qDebug()<<"after:"<<averageS2 ;
+        qDebug()<<"after:"<<averageBpm;
+        qDebug()<<"after:"<<averageLTv;
+        qDebug()<<"after:"<<averageBpv0;
+        qDebug()<<"after:"<<averageBpv1;
+        qDebug()<<"after:"<<averageGlu;
+
+        //------------------------------------------------------------------------------//
+        // 剔除比平均大110%和小於90%的值
+        int finalCount = S2.size() ;
+        for (int i = 0; i < S2.size(); i++ ) {
+            if (S2[i] > averageS2 * 1.1 || S2[i] < averageS2 * 0.9) {
+                finalCount--;
             }
-            glu.removeFirst();
+        }
 
-
-          //  計算剩下數值平均
-          int sum = 0;
-          for (int i : S2) {
-              sum += i;
-          }
-          int averageS2 = sum / S2.size();
-
-          sum = 0;
-          for (int i : bpm) {
-              sum += i;
-          }
-          int averageBpm = sum / bpm.size();
-
-          float sumLTv = 0.00 ;
-          for (float i : LTv) {
-              sumLTv += i;
-          }
-          float averageLTv = float(sumLTv / LTv.size());
-
-          sum = 0;
-          for (int i : bpv0) {
-              sum += i;
-          }
-          int averageBpv0 = sum / bpv0.size();
-
-          sum = 0;
-          for (int i : bpv1) {
-              sum += i;
-          }
-          int averageBpv1 = sum / bpv1.size();
-
-          sum = 0;
-          for (int i : glu) {
-              sum += i;
-          }
-          int averageGlu = sum / glu.size();
-
-          qDebug()<<"after:"<<averageS2 ;
-          qDebug()<<"after:"<<averageBpm;
-          qDebug()<<"after:"<<averageLTv;
-          qDebug()<<"after:"<<averageBpv0;
-          qDebug()<<"after:"<<averageBpv1;
-          qDebug()<<"after:"<<averageGlu;
-
-
-          // 剔除比平均大110%和小於90%的值
+        if(finalCount > 0)
+        {
             for (int i = 0; i < S2.size(); i++ ) {
                 if (S2[i] > averageS2 * 1.1 || S2[i] < averageS2 * 0.9) {
                     S2[i] = 0;
                 }
             }
+        }
+        S2.removeAll(0);
 
-            S2.removeAll(0);
+        finalCount = 0 ;
+        // 計算剩下數值的平均值
+        sum = 0;
+        for (int i : S2) {
+            sum += i;
+        }
+        int newAverageS2 = sum / S2.size();
 
-            // 計算剩下數值的平均值
-            sum = 0;
-            for (int i : S2) {
-                sum += i;
+        qDebug() << "剔除後newAverageS2的平均值:" << newAverageS2;
+        //------------------------------------------------------------------------------//
+        finalCount = bpm.size() ;
+        for (int i = 0; i < bpm.size(); i++) {
+            if (bpm[i] > averageBpm * 1.1 || bpm[i] < averageBpm * 0.9) {
+                finalCount --;
             }
-            int newAverageS2 = sum / S2.size();
-
-            qDebug() << "剔除後newAverageS2的平均值:" << newAverageS2;
-
+        }
+        if(finalCount > 0){
             for (int i = 0; i < bpm.size(); i++) {
                 if (bpm[i] > averageBpm * 1.1 || bpm[i] < averageBpm * 0.9) {
                     bpm[i] = 0;
                 }
             }
+        }
+        bpm.removeAll(0);
 
-            bpm.removeAll(0);
+        finalCount = 0;
+        // 計算剩下數值的平均值
+        sum = 0;
+        for (int i : bpm) {
+            sum += i;
+        }
+        int newAverageBpm = sum / bpm.size();
 
-            // 計算剩下數值的平均值
-            sum = 0;
-            for (int i : bpm) {
-                sum += i;
+        qDebug() << "剔除後newAverageBpm的平均值:" << newAverageBpm;
+        //---------------------------------------------------------------------------//
+        finalCount = LTv.size() ;
+        for (int i = 0; i < LTv.size();i++ ) {
+            if (LTv[i] > averageLTv * 1.1 || LTv[i] < averageLTv * 0.9) {
+                finalCount--;
             }
-            int newAverageBpm = sum / bpm.size();
+        }
 
-            qDebug() << "剔除後newAverageBpm的平均值:" << newAverageBpm;
-
+        if(finalCount > 0){
             for (int i = 0; i < LTv.size();i++ ) {
                 if (LTv[i] > averageLTv * 1.1 || LTv[i] < averageLTv * 0.9) {
                     LTv[i] = 0.00;
                 }
             }
+        }
+        LTv.removeAll(0.00);
 
-            LTv.removeAll(0.00);
+        finalCount = 0;
+        // 計算剩下數值的平均值
+        sumLTv = 0.00;
+        for (float i : LTv) {
+            sumLTv += i;
+        }
+        float newAverageLTv = float(sumLTv / LTv.size());
 
-            // 计算剩下数值的平均值
-            sumLTv = 0.00;
-            for (float i : LTv) {
-                sumLTv += i;
+        qDebug()<<"sumLTv:"<<sumLTv;
+        qDebug()<<"float("<<sumLTv<<" / "<<LTv.size()<<"):"<<averageLTv;
+        qDebug() << "剔除後newAverageLTv的平均值:" << newAverageLTv;
+        //---------------------------------------------------------------------------//
+        finalCount = bpv0.size();
+        for (int i = 0; i < bpv0.size(); i++) {
+            if (bpv0[i] > averageBpv0 * 1.1 || bpv0[i] < averageBpv0 * 0.9) {
+                finalCount -- ;
             }
-            float newAverageLTv = float(sumLTv / LTv.size());
-
-
-            qDebug()<<"sumLTv:"<<sumLTv;
-            qDebug()<<"float("<<sumLTv<<" / "<<LTv.size()<<"):"<<averageLTv;
-
-
-            qDebug() << "剔除後newAverageLTv的平均值:" << newAverageLTv;
-
+        }
+        if(finalCount > 0){
             for (int i = 0; i < bpv0.size(); i++) {
                 if (bpv0[i] > averageBpv0 * 1.1 || bpv0[i] < averageBpv0 * 0.9) {
                     bpv0[i] = 0;
                 }
             }
+        }
+        bpv0.removeAll(0);
 
-            bpv0.removeAll(0);
+        // 计算剩下数值的平均值
+        sum = 0;
+        for (int i : bpv0) {
+            sum += i;
+        }
+        int newAverageBpv0 = sum / bpv0.size();
 
-            // 计算剩下数值的平均值
-            sum = 0;
-            for (int i : bpv0) {
-                sum += i;
+        qDebug() << "剔除後newAveragebpv0的平均值:" << newAverageBpv0;
+        //-----------------------------------------------------------------------------//
+        finalCount = bpv1.size();
+        for (int i = 0; i < bpv1.size(); i++) {
+            if (bpv1[i] > averageBpv1 * 1.1 || bpv1[i] < averageBpv1 * 0.9) {
+                finalCount--;
             }
-            int newAverageBpv0 = sum / bpv0.size();
-
-            qDebug() << "剔除後newAveragebpv0的平均值:" << newAverageBpv0;
+        }
+        if(finalCount >0){
 
             for (int i = 0; i < bpv1.size(); i++) {
+
                 if (bpv1[i] > averageBpv1 * 1.1 || bpv1[i] < averageBpv1 * 0.9) {
+
                     bpv1[i] = 0;
+
                 }
+
             }
+        }
 
-            bpv1.removeAll(0);
+        bpv1.removeAll(0);
 
-            // 计算剩下数值的平均值
-            sum = 0;
-            for (int i : bpv1) {
-                sum += i;
+        // 计算剩下数值的平均值
+        sum = 0;
+        for (int i : bpv1) {
+            sum += i;
+        }
+        int newAverageBpv1 = sum / bpv1.size();
+
+        qDebug() << sum <<"/"<<bpv1.size() <<"="<<newAverageBpv1;
+        qDebug() << "剔除後newAveragebpv1的平均值:" << newAverageBpv1;
+        //-----------------------------------------------------------------------
+        finalCount = glu.size();
+        for (int i = 0; i < glu.size(); i++) {
+            if (glu[i] > averageGlu * 1.2 || glu[i] < averageGlu * 0.9) {
+                finalCount --;
             }
-            int newAverageBpv1 = sum / bpv1.size();
-
-            qDebug() << "剔除後newAveragebpv1的平均值:" << newAverageBpv1;
+        }
+        if(finalCount >0){
 
             for (int i = 0; i < glu.size(); i++) {
+
                 if (glu[i] > averageGlu * 1.2 || glu[i] < averageGlu * 0.9) {
+
                     glu[i] = 0;
+
                 }
+
             }
+        }
 
-            glu.removeAll(0);
+        glu.removeAll(0);
 
-            // 计算剩下数值的平均值
-            sum = 0;
-            for (int i : glu) {
-                sum += i;
-            }
-            int newAverageGlu = sum / glu.size();
+        // 计算剩下数值的平均值
+        sum = 0;
+        for (int i : glu) {
+            sum += i;
+        }
+        int newAverageGlu = sum / glu.size();
 
-            qDebug() << "剔除後newAverageglu的平均值:" << newAverageGlu;
+        qDebug() << "剔除後newAverageglu的平均值:" << newAverageGlu;
 
-            returnTxt = QString("%1\n%2\n%3\n%4\n%5\n%6\n%7\n")
-                    .arg(QString::fromUtf8("分析統計結果:"))
-                    .arg(QString::fromUtf8("血氧值:%1").arg(newAverageS2))
-                    .arg(QString::fromUtf8("心跳:%2").arg(newAverageBpm))
-                    .arg(QString::fromUtf8("乳酸值:%3").arg(newAverageLTv))
-                    .arg(QString::fromUtf8("舒張壓:%4").arg(newAverageBpv0))
-                    .arg(QString::fromUtf8("收縮壓:%5").arg(newAverageBpv1))
-                    .arg(QString::fromUtf8("血糖值:%6").arg(newAverageGlu));
+        returnTxt = QString("%1\n============\n%2\n%3\n%4\n%5\n%6\n%7\n============\n")
+                .arg(QString(tr("分析統計結果:")))
+                .arg(QString(tr("血氧值:%1")).arg(newAverageS2))
+                .arg(QString(tr("心跳:%2")).arg(newAverageBpm))
+                .arg(QString(tr("乳酸值:%3")).arg(newAverageLTv))
+                .arg(QString(tr("舒張壓:%4")).arg(newAverageBpv0))
+                .arg(QString(tr("收縮壓:%5")).arg(newAverageBpv1))
+                .arg(QString(tr("血糖值:%6")).arg(newAverageGlu));
     }
     else if(dataSize > 4 && dataSize < 14 )
     {
         // 刪除最大和最小兩筆
-          for (int i = 0; i < 1; i++) {
-              S2.removeLast();
-              S2.removeFirst();
+        for (int i = 0; i < 1; i++) {
+            S2.removeLast();
+            S2.removeFirst();
 
-              bpm.removeLast();
-              bpm.removeFirst();
+            bpm.removeLast();
+            bpm.removeFirst();
 
-              LTv.removeLast();
-              LTv.removeFirst();
+            LTv.removeLast();
+            LTv.removeFirst();
 
-              bpv0.removeLast();
-              bpv0.removeFirst();
+            bpv0.removeLast();
+            bpv0.removeFirst();
 
-              bpv1.removeLast();
-              bpv1.removeFirst();
-          }
+            bpv1.removeLast();
+            bpv1.removeFirst();
+        }
 
-          // 刪除最大和最小
-            glu.removeLast();
+        // 刪除最大和最小
+        glu.removeLast();
 
-            glu.removeFirst();
+        glu.removeFirst();
 
-            qDebug()<<"after:"<<S2 ;
-            qDebug()<<"after:"<<bpm;
-            qDebug()<<"after:"<<LTv;
-            qDebug()<<"after:"<<bpv0;
-            qDebug()<<"after:"<<bpv1;
-            qDebug()<<"after:"<<glu;
+        qDebug()<<"after:"<<S2 ;
+        qDebug()<<"after:"<<bpm;
+        qDebug()<<"after:"<<LTv;
+        qDebug()<<"after:"<<bpv0;
+        qDebug()<<"after:"<<bpv1;
+        qDebug()<<"after:"<<glu;
 
-          //  計算剩下數值平均
-          int sum = 0;
-          for (int i : S2) {
-              sum += i;
-          }
-          int averageS2 = sum / S2.size();
+        //  計算剩下數值平均
+        int sum = 0;
+        for (int i : S2) {
+            sum += i;
+        }
+        int averageS2 = sum / S2.size();
 
-          sum = 0;
-          for (int i : bpm) {
-              sum += i;
-          }
-          int averageBpm = sum / bpm.size();
+        sum = 0;
+        for (int i : bpm) {
+            sum += i;
+        }
+        int averageBpm = sum / bpm.size();
 
-          float sumLTv = 0.00 ;
-          for (float i : LTv) {
-              sumLTv += i;
-          }
-          float averageLTv = float(sumLTv / LTv.size());
+        float sumLTv = 0.00 ;
+        for (float i : LTv) {
+            sumLTv += i;
+        }
+        float averageLTv = float(sumLTv / LTv.size());
 
-          qDebug()<<"sumLTv:"<<sumLTv;
-          qDebug()<<"float("<<sumLTv<<" / "<<LTv.size()<<"):"<<averageLTv;
-
-
-          sum = 0;
-          for (int i : bpv0) {
-              sum += i;
-          }
-          int averageBpv0 = sum / bpv0.size();
-
-          sum = 0;
-          for (int i : bpv1) {
-              sum += i;
-          }
-          int averageBpv1 = sum / bpv1.size();
-
-          sum = 0;
-          for (int i : glu) {
-              sum += i;
-          }
-          int averageGlu = sum / glu.size();
-          qDebug()<<"sumGlu:"<<sum;
-          qDebug()<<"int("<<sum<<" / "<<glu.size()<<"):"<<averageGlu;
-
-          qDebug()<<"after:"<<averageS2 ;
-          qDebug()<<"after:"<<averageBpm;
-          qDebug()<<"after:"<<averageLTv;
-          qDebug()<<"after:"<<averageBpv0;
-          qDebug()<<"after:"<<averageBpv1;
-          qDebug()<<"after:"<<averageGlu;
+        qDebug()<<"sumLTv:"<<sumLTv;
+        qDebug()<<"float("<<sumLTv<<" / "<<LTv.size()<<"):"<<averageLTv;
 
 
+        sum = 0;
+        for (int i : bpv0) {
+            sum += i;
+        }
+        int averageBpv0 = sum / bpv0.size();
 
-            returnTxt = QString("%1\n%2\n%3\n%4\n%5\n%6\n%7\n")
-                    .arg(QString::fromUtf8("分析統計結果:"))
-                    .arg(QString::fromUtf8("血氧值:%1").arg(averageS2))
-                    .arg(QString::fromUtf8("心跳:%2").arg(averageBpm))
-                    .arg(QString::fromUtf8("乳酸值:%3").arg(averageLTv))
-                    .arg(QString::fromUtf8("舒張壓:%4").arg(averageBpv0))
-                    .arg(QString::fromUtf8("收縮壓:%5").arg(averageBpv1))
-                    .arg(QString::fromUtf8("血糖值:%6").arg(averageGlu));
+        sum = 0;
+        for (int i : bpv1) {
+            sum += i;
+        }
+        int averageBpv1 = sum / bpv1.size();
+
+        sum = 0;
+        for (int i : glu) {
+            sum += i;
+        }
+        int averageGlu = sum / glu.size();
+        qDebug()<<"sumGlu:"<<sum;
+        qDebug()<<"int("<<sum<<" / "<<glu.size()<<"):"<<averageGlu;
+
+        qDebug()<<"after:"<<averageS2 ;
+        qDebug()<<"after:"<<averageBpm;
+        qDebug()<<"after:"<<averageLTv;
+        qDebug()<<"after:"<<averageBpv0;
+        qDebug()<<"after:"<<averageBpv1;
+        qDebug()<<"after:"<<averageGlu;
+
+
+
+        returnTxt = QString("%1\n============\n%2\n%3\n%4\n%5\n%6\n%7\n============\n")
+                .arg(tr("分析統計結果:"))
+                .arg(tr("血氧值:%1").arg(averageS2))
+                .arg(tr("心跳:%2").arg(averageBpm))
+                .arg(tr("乳酸值:%3").arg(averageLTv))
+                .arg(tr("舒張壓:%4").arg(averageBpv0))
+                .arg(tr("收縮壓:%5").arg(averageBpv1))
+                .arg(tr("血糖值:%6").arg(averageGlu));
     }
     else if(dataSize <= 4)
     {
 
-          //  計算剩下數值平均
-          int sum = 0;
-          for (int i : S2) {
-              sum += i;
-          }
-          int averageS2 = sum / S2.size();
+        //  計算剩下數值平均
+        int sum = 0;
+        for (int i : S2) {
+            sum += i;
+        }
+        int averageS2 = sum / S2.size();
 
-          sum = 0;
-          for (int i : bpm) {
-              sum += i;
-          }
-          int averageBpm = sum / bpm.size();
+        sum = 0;
+        for (int i : bpm) {
+            sum += i;
+        }
+        int averageBpm = sum / bpm.size();
 
-          float sumLTv = 0.00 ;
-          for (float i : LTv) {
-              sumLTv += i;
-          }
-          float averageLTv = float(sumLTv / LTv.size());
-          qDebug()<<"sumLTv:"<<sumLTv;
-          qDebug()<<"float("<<sumLTv<<" / "<<LTv.size()<<"):"<<averageLTv;
+        float sumLTv = 0.00 ;
+        for (float i : LTv) {
+            sumLTv += i;
+        }
+        float averageLTv = float(sumLTv / LTv.size());
+        qDebug()<<"sumLTv:"<<sumLTv;
+        qDebug()<<"float("<<sumLTv<<" / "<<LTv.size()<<"):"<<averageLTv;
 
-          sum = 0;
-          for (int i : bpv0) {
-              sum += i;
-          }
-          int averageBpv0 = sum / bpv0.size();
+        sum = 0;
+        for (int i : bpv0) {
+            sum += i;
+        }
+        int averageBpv0 = sum / bpv0.size();
 
-          sum = 0;
-          for (int i : bpv1) {
-              sum += i;
-          }
-          int averageBpv1 = sum / bpv1.size();
+        sum = 0;
+        for (int i : bpv1) {
+            sum += i;
+        }
+        int averageBpv1 = sum / bpv1.size();
 
-          sum = 0;
-          for (int i : glu) {
-              sum += i;
-          }
-          int averageGlu = sum / glu.size();
-          qDebug()<<"sumGlu:"<<sum;
-          qDebug()<<"int("<<sum<<" / "<<glu.size()<<"):"<<averageGlu;
-
-
-          qDebug()<<"after:"<<averageS2 ;
-          qDebug()<<"after:"<<averageBpm;
-          qDebug()<<"after:"<<averageLTv;
-          qDebug()<<"after:"<<averageBpv0;
-          qDebug()<<"after:"<<averageBpv1;
-          qDebug()<<"after:"<<averageGlu;
+        sum = 0;
+        for (int i : glu) {
+            sum += i;
+        }
+        int averageGlu = sum / glu.size();
+        qDebug()<<"sumGlu:"<<sum;
+        qDebug()<<"int("<<sum<<" / "<<glu.size()<<"):"<<averageGlu;
 
 
+        qDebug()<<"after:"<<averageS2 ;
+        qDebug()<<"after:"<<averageBpm;
+        qDebug()<<"after:"<<averageLTv;
+        qDebug()<<"after:"<<averageBpv0;
+        qDebug()<<"after:"<<averageBpv1;
+        qDebug()<<"after:"<<averageGlu;
 
-            returnTxt = QString("%1\n%2\n%3\n%4\n%5\n%6\n%7\n")
-                    .arg(QString::fromUtf8("分析統計結果:"))
-                    .arg(QString::fromUtf8("血氧值:%1").arg(averageS2))
-                    .arg(QString::fromUtf8("心跳:%2").arg(averageBpm))
-                    .arg(QString::fromUtf8("乳酸值:%3").arg(averageLTv))
-                    .arg(QString::fromUtf8("舒張壓:%4").arg(averageBpv0))
-                    .arg(QString::fromUtf8("收縮壓:%5").arg(averageBpv1))
-                    .arg(QString::fromUtf8("血糖值:%6").arg(averageGlu));
+
+
+        returnTxt = QString("%1\n============\n%2\n%3\n%4\n%5\n%6\n%7\n============\n")
+                .arg(QString(tr("分析統計結果:")))
+                .arg(QString(tr("血氧值:%1")).arg(averageS2))
+                .arg(QString(tr("心跳:%2")).arg(averageBpm))
+                .arg(QString(tr("乳酸值:%3")).arg(averageLTv))
+                .arg(QString(tr("舒張壓:%4")).arg(averageBpv0))
+                .arg(QString(tr("收縮壓:%5")).arg(averageBpv1))
+                .arg(QString(tr("血糖值:%6")).arg(averageGlu));
     }
 
     return returnTxt;
@@ -1253,32 +1322,32 @@ bool uploadUtility::moveFileToSelectFolder(QString file, QString folderName)
 
 
     QDir targetDir(targetFolderPath);
-        if (!targetDir.exists()) {
-            targetDir.mkpath("."); // 建立folder
-        }
+    if (!targetDir.exists()) {
+        targetDir.mkpath("."); // 建立folder
+    }
 
-        QString format ;
-        if(file.contains("avi")) format = ".avi";
-        else format = ".mp4";
-        QString targetFilePath = targetFolderPath + "/" +srcInfo.baseName() + format;
-        if (QFile::exists(targetFilePath)) {
-            qDebug() << "File already exists in the target folder.";
-        } else {
-            if (QFile::copy(sourceFilePath, targetFilePath)) {
-                qDebug() << sourceFilePath<<" moved to the "<<targetFilePath;
-                if (QFile::remove(sourceFilePath)) {
+    QString format ;
+    if(file.contains("avi")) format = ".avi";
+    else format = ".mp4";
+    QString targetFilePath = targetFolderPath + "/" +srcInfo.baseName() + format;
+    if (QFile::exists(targetFilePath)) {
+        qDebug() << "File already exists in the target folder.";
+    } else {
+        if (QFile::copy(sourceFilePath, targetFilePath)) {
+            qDebug() << sourceFilePath<<" moved to the "<<targetFilePath;
+            if (QFile::remove(sourceFilePath)) {
 
-                    qDebug() <<sourceFilePath << " removed.";
+                qDebug() <<sourceFilePath << " removed.";
 
-                } else {
-
-                    qDebug() << "Failed to remove the original file.";
-
-                }
             } else {
-                qDebug() << "Failed to move the file.";
+
+                qDebug() << "Failed to remove the original file.";
+
             }
+        } else {
+            qDebug() << "Failed to move the file.";
         }
+    }
 }
 
 QString uploadUtility::getUrl()

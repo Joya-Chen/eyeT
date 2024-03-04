@@ -30,3 +30,18 @@ void processForm::setHintText(QString hintText)
     ui->label_hintText->setText(hintText);
 
 }
+
+void processForm::changeEvent(QEvent *e)
+{
+    QWidget::changeEvent(e);
+        switch (e->type())
+        {
+           case QEvent::LanguageChange:
+                qDebug()<<"processForm::LanguageChange";
+                //ui->retranslateUi(this);
+                //還有其他手工更新界面的內容
+            break;
+           default:
+            break;
+        }
+}

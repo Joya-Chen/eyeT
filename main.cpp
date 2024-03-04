@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QCoreApplication>
-
+#include <QTranslator>
 void customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     QFile logFile("./log.txt");
@@ -36,11 +36,24 @@ int main(int argc, char *argv[])
 #endif
     QApplication a(argc, argv);
 
+
+    if (CLS_GLOBAL::translator != NULL)
+    {
+        qApp->removeTranslator(CLS_GLOBAL::translator);
+        delete CLS_GLOBAL::translator;
+        CLS_GLOBAL::translator = NULL;
+    }
+    CLS_GLOBAL::translator = new QTranslator;
+    CLS_GLOBAL::translator->load("./Language/eyeT_en.qm");
+    a.installTranslator(CLS_GLOBAL::translator);
+
     MainWindow w;
 
-    QFont font("微軟正黑體",12);
+    //QFont font("Roboto",9);
 
-    w.setFont(font);
+    //w.setFont(font);
+
+    w.setAttribute(Qt::WA_DeleteOnClose);
 
     w.show();
 

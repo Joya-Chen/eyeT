@@ -18,6 +18,10 @@ public:
     QString getFileCode();
     int getExposeValue();
     int getBiterate();
+
+protected:
+    void changeEvent(QEvent *e) override;
+
 signals:
     void paramUpdate(QString file_Code, int expose_value, int bite_rate);
 

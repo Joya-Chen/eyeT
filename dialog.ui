@@ -12,8 +12,8 @@
   </property>
   <property name="font">
    <font>
-    <family>微軟正黑體</family>
-    <pointsize>10</pointsize>
+    <family>Segoe UI</family>
+    <pointsize>9</pointsize>
     <stylestrategy>PreferAntialias</stylestrategy>
    </font>
   </property>
@@ -31,6 +31,13 @@
      <width>80</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft JhengHei UI</family>
+     <pointsize>9</pointsize>
+     <stylestrategy>PreferAntialias</stylestrategy>
+    </font>
    </property>
    <property name="text">
     <string>OK</string>
@@ -60,6 +67,13 @@
      <width>391</width>
      <height>111</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft JhengHei UI</family>
+     <pointsize>9</pointsize>
+     <stylestrategy>PreferAntialias</stylestrategy>
+    </font>
    </property>
    <property name="text">
     <string/>

@@ -46,6 +46,9 @@ public:
     QAction *action_set;
     QAction *action_upload_set;
     QAction *actio_video_set;
+    QAction *actionchinese;
+    QAction *actionEnglish;
+    QAction *actionShowDetail;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout_6;
@@ -99,6 +102,9 @@ public:
     QMenu *menu;
     QMenu *menu_2;
     QMenu *menu_3;
+    QMenu *menu_4;
+    QMenu *menu_5;
+    QMenu *menu_6;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -106,10 +112,11 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1208, 927);
+        MainWindow->resize(1246, 928);
         MainWindow->setMinimumSize(QSize(0, 0));
         QFont font;
-        font.setFamily(QString::fromUtf8("\345\276\256\350\273\237\346\255\243\351\273\221\351\253\224"));
+        font.setFamily(QStringLiteral("Microsoft JhengHei UI"));
+        font.setPointSize(9);
         MainWindow->setFont(font);
         QIcon icon;
         icon.addFile(QStringLiteral(":/deepicon.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -120,6 +127,7 @@ public:
         action_about = new QAction(MainWindow);
         action_about->setObjectName(QStringLiteral("action_about"));
         action_about->setIcon(icon);
+        action_about->setFont(font);
         action10s_2 = new QAction(MainWindow);
         action10s_2->setObjectName(QStringLiteral("action10s_2"));
         action20s_2 = new QAction(MainWindow);
@@ -132,9 +140,31 @@ public:
         action_set->setObjectName(QStringLiteral("action_set"));
         action_upload_set = new QAction(MainWindow);
         action_upload_set->setObjectName(QStringLiteral("action_upload_set"));
+        QFont font1;
+        font1.setFamily(QStringLiteral("Segoe UI"));
+        font1.setPointSize(9);
+        font1.setBold(false);
+        font1.setWeight(50);
+        action_upload_set->setFont(font1);
         actio_video_set = new QAction(MainWindow);
         actio_video_set->setObjectName(QStringLiteral("actio_video_set"));
         actio_video_set->setEnabled(true);
+        QFont font2;
+        font2.setFamily(QStringLiteral("Segoe UI"));
+        font2.setPointSize(9);
+        actio_video_set->setFont(font2);
+        actionchinese = new QAction(MainWindow);
+        actionchinese->setObjectName(QStringLiteral("actionchinese"));
+        actionchinese->setCheckable(false);
+        actionchinese->setFont(font);
+        actionEnglish = new QAction(MainWindow);
+        actionEnglish->setObjectName(QStringLiteral("actionEnglish"));
+        actionEnglish->setCheckable(false);
+        actionEnglish->setFont(font);
+        actionShowDetail = new QAction(MainWindow);
+        actionShowDetail->setObjectName(QStringLiteral("actionShowDetail"));
+        actionShowDetail->setCheckable(false);
+        actionShowDetail->setFont(font2);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -157,12 +187,13 @@ public:
         label->setObjectName(QStringLiteral("label"));
         label->setMinimumSize(QSize(632, 30));
         label->setMaximumSize(QSize(632, 30));
-        QFont font1;
-        font1.setFamily(QString::fromUtf8("\345\276\256\350\273\237\346\255\243\351\273\221\351\253\224"));
-        font1.setPointSize(10);
-        font1.setBold(true);
-        font1.setWeight(75);
-        label->setFont(font1);
+        QFont font3;
+        font3.setFamily(QStringLiteral("Segoe UI"));
+        font3.setPointSize(11);
+        font3.setBold(true);
+        font3.setItalic(false);
+        font3.setWeight(75);
+        label->setFont(font3);
 
         verticalLayout->addWidget(label);
 
@@ -173,12 +204,13 @@ public:
         comboBox_camList->setObjectName(QStringLiteral("comboBox_camList"));
         comboBox_camList->setEnabled(true);
         comboBox_camList->setMinimumSize(QSize(0, 30));
-        QFont font2;
-        font2.setFamily(QStringLiteral("Arial"));
-        font2.setPointSize(10);
-        font2.setBold(true);
-        font2.setWeight(75);
-        comboBox_camList->setFont(font2);
+        QFont font4;
+        font4.setFamily(QStringLiteral("Segoe UI"));
+        font4.setPointSize(9);
+        font4.setBold(false);
+        font4.setItalic(false);
+        font4.setWeight(50);
+        comboBox_camList->setFont(font4);
         comboBox_camList->setEditable(false);
 
         horizontalLayout_5->addWidget(comboBox_camList);
@@ -187,12 +219,7 @@ public:
         btnRefresh->setObjectName(QStringLiteral("btnRefresh"));
         btnRefresh->setMinimumSize(QSize(90, 30));
         btnRefresh->setMaximumSize(QSize(90, 30));
-        QFont font3;
-        font3.setFamily(QStringLiteral("Arial Black"));
-        font3.setPointSize(10);
-        font3.setBold(true);
-        font3.setWeight(75);
-        btnRefresh->setFont(font3);
+        btnRefresh->setFont(font4);
 
         horizontalLayout_5->addWidget(btnRefresh);
 
@@ -206,17 +233,18 @@ public:
         lineEdit_camName->setObjectName(QStringLiteral("lineEdit_camName"));
         lineEdit_camName->setEnabled(true);
         lineEdit_camName->setMinimumSize(QSize(0, 30));
-        QFont font4;
-        font4.setFamily(QStringLiteral("Arial"));
-        font4.setPointSize(8);
-        lineEdit_camName->setFont(font4);
+        QFont font5;
+        font5.setFamily(QStringLiteral("Segoe UI"));
+        font5.setPointSize(9);
+        font5.setItalic(false);
+        lineEdit_camName->setFont(font5);
 
         horizontalLayout->addWidget(lineEdit_camName);
 
         btnEditCamName = new QPushButton(centralWidget);
         btnEditCamName->setObjectName(QStringLiteral("btnEditCamName"));
         btnEditCamName->setMinimumSize(QSize(90, 30));
-        btnEditCamName->setFont(font1);
+        btnEditCamName->setFont(font4);
 
         horizontalLayout->addWidget(btnEditCamName);
 
@@ -263,12 +291,12 @@ public:
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setMinimumSize(QSize(40, 50));
         label_2->setMaximumSize(QSize(100, 50));
-        QFont font5;
-        font5.setFamily(QStringLiteral("Arial Black"));
-        font5.setPointSize(12);
-        font5.setBold(true);
-        font5.setWeight(75);
-        label_2->setFont(font5);
+        QFont font6;
+        font6.setFamily(QStringLiteral("Arial Black"));
+        font6.setPointSize(12);
+        font6.setBold(true);
+        font6.setWeight(75);
+        label_2->setFont(font6);
         label_2->setAlignment(Qt::AlignCenter);
 
         horizontalLayout_4->addWidget(label_2);
@@ -277,14 +305,14 @@ public:
         textEdit_testerNo->setObjectName(QStringLiteral("textEdit_testerNo"));
         textEdit_testerNo->setMinimumSize(QSize(260, 35));
         textEdit_testerNo->setMaximumSize(QSize(200, 35));
-        QFont font6;
-        font6.setFamily(QStringLiteral("Arial"));
-        font6.setPointSize(10);
-        font6.setBold(false);
-        font6.setWeight(50);
-        font6.setKerning(true);
-        font6.setStyleStrategy(QFont::PreferAntialias);
-        textEdit_testerNo->setFont(font6);
+        QFont font7;
+        font7.setFamily(QStringLiteral("Segoe UI"));
+        font7.setPointSize(9);
+        font7.setBold(false);
+        font7.setWeight(50);
+        font7.setKerning(true);
+        font7.setStyleStrategy(QFont::PreferAntialias);
+        textEdit_testerNo->setFont(font7);
         textEdit_testerNo->setLayoutDirection(Qt::LeftToRight);
         textEdit_testerNo->setFrameShape(QFrame::Box);
         textEdit_testerNo->setFrameShadow(QFrame::Plain);
@@ -301,17 +329,14 @@ public:
         btnCameraStart_r = new QPushButton(centralWidget);
         btnCameraStart_r->setObjectName(QStringLiteral("btnCameraStart_r"));
         btnCameraStart_r->setMinimumSize(QSize(90, 35));
-        QFont font7;
-        font7.setFamily(QString::fromUtf8("\345\276\256\350\273\237\346\255\243\351\273\221\351\253\224"));
-        font7.setPointSize(10);
-        btnCameraStart_r->setFont(font7);
+        btnCameraStart_r->setFont(font1);
 
         horizontalLayout_4->addWidget(btnCameraStart_r);
 
         btnCameraStart_l = new QPushButton(centralWidget);
         btnCameraStart_l->setObjectName(QStringLiteral("btnCameraStart_l"));
         btnCameraStart_l->setMinimumSize(QSize(90, 35));
-        btnCameraStart_l->setFont(font7);
+        btnCameraStart_l->setFont(font1);
 
         horizontalLayout_4->addWidget(btnCameraStart_l);
 
@@ -329,7 +354,7 @@ public:
         label_showInfo->setObjectName(QStringLiteral("label_showInfo"));
         label_showInfo->setMinimumSize(QSize(308, 35));
         label_showInfo->setMaximumSize(QSize(308, 35));
-        label_showInfo->setFont(font3);
+        label_showInfo->setFont(font1);
         label_showInfo->setMidLineWidth(0);
         label_showInfo->setScaledContents(false);
         label_showInfo->setAlignment(Qt::AlignCenter);
@@ -339,28 +364,28 @@ public:
         btn_cancelWriteVideo = new QPushButton(centralWidget);
         btn_cancelWriteVideo->setObjectName(QStringLiteral("btn_cancelWriteVideo"));
         btn_cancelWriteVideo->setMinimumSize(QSize(90, 35));
-        btn_cancelWriteVideo->setFont(font7);
+        btn_cancelWriteVideo->setFont(font1);
 
         horizontalLayout_3->addWidget(btn_cancelWriteVideo);
 
         btn_tester_finish = new QPushButton(centralWidget);
         btn_tester_finish->setObjectName(QStringLiteral("btn_tester_finish"));
         btn_tester_finish->setMinimumSize(QSize(90, 35));
-        btn_tester_finish->setFont(font7);
+        btn_tester_finish->setFont(font1);
 
         horizontalLayout_3->addWidget(btn_tester_finish);
 
         btnOpenFolder = new QPushButton(centralWidget);
         btnOpenFolder->setObjectName(QStringLiteral("btnOpenFolder"));
         btnOpenFolder->setMinimumSize(QSize(90, 35));
-        btnOpenFolder->setFont(font7);
+        btnOpenFolder->setFont(font1);
 
         horizontalLayout_3->addWidget(btnOpenFolder);
 
         btnVideoSelUpload = new QPushButton(centralWidget);
         btnVideoSelUpload->setObjectName(QStringLiteral("btnVideoSelUpload"));
         btnVideoSelUpload->setMinimumSize(QSize(90, 35));
-        btnVideoSelUpload->setFont(font7);
+        btnVideoSelUpload->setFont(font1);
 
         horizontalLayout_3->addWidget(btnVideoSelUpload);
 
@@ -379,7 +404,7 @@ public:
 
         txtShow = new QPlainTextEdit(centralWidget);
         txtShow->setObjectName(QStringLiteral("txtShow"));
-        txtShow->setFont(font7);
+        txtShow->setFont(font2);
 
         horizontalLayout_6->addWidget(txtShow);
 
@@ -426,11 +451,11 @@ public:
         palette.setBrush(QPalette::Disabled, QPalette::Text, brush1);
         label_version->setPalette(palette);
         QFont font8;
-        font8.setFamily(QStringLiteral("Arial"));
-        font8.setPointSize(9);
-        font8.setBold(true);
+        font8.setFamily(QStringLiteral("Segoe UI"));
+        font8.setPointSize(8);
+        font8.setBold(false);
         font8.setItalic(true);
-        font8.setWeight(75);
+        font8.setWeight(50);
         label_version->setFont(font8);
         label_version->setAlignment(Qt::AlignCenter);
 
@@ -439,50 +464,48 @@ public:
         btnCameraStart = new QPushButton(centralWidget);
         btnCameraStart->setObjectName(QStringLiteral("btnCameraStart"));
         btnCameraStart->setEnabled(true);
-        btnCameraStart->setFont(font7);
+        btnCameraStart->setFont(font2);
 
         horizontalLayout_2->addWidget(btnCameraStart);
 
         btnCameraStop = new QPushButton(centralWidget);
         btnCameraStop->setObjectName(QStringLiteral("btnCameraStop"));
-        btnCameraStop->setFont(font7);
+        btnCameraStop->setFont(font2);
 
         horizontalLayout_2->addWidget(btnCameraStop);
 
         btnVideoSetting = new QPushButton(centralWidget);
         btnVideoSetting->setObjectName(QStringLiteral("btnVideoSetting"));
         btnVideoSetting->setEnabled(true);
-        btnVideoSetting->setFont(font7);
+        btnVideoSetting->setFont(font2);
 
         horizontalLayout_2->addWidget(btnVideoSetting);
 
         btnVideoSelTest = new QPushButton(centralWidget);
         btnVideoSelTest->setObjectName(QStringLiteral("btnVideoSelTest"));
         btnVideoSelTest->setEnabled(true);
-        btnVideoSelTest->setFont(font7);
+        btnVideoSelTest->setFont(font2);
 
         horizontalLayout_2->addWidget(btnVideoSelTest);
 
         btnROINUpload = new QPushButton(centralWidget);
         btnROINUpload->setObjectName(QStringLiteral("btnROINUpload"));
         btnROINUpload->setEnabled(true);
-        QFont font9;
-        font9.setPointSize(10);
-        btnROINUpload->setFont(font9);
+        btnROINUpload->setFont(font2);
 
         horizontalLayout_2->addWidget(btnROINUpload);
 
         btn_roiAuto = new QPushButton(centralWidget);
         btn_roiAuto->setObjectName(QStringLiteral("btn_roiAuto"));
         btn_roiAuto->setMinimumSize(QSize(0, 0));
-        btn_roiAuto->setFont(font9);
+        btn_roiAuto->setFont(font2);
 
         horizontalLayout_2->addWidget(btn_roiAuto);
 
         btnVideoSeltoCanny = new QPushButton(centralWidget);
         btnVideoSeltoCanny->setObjectName(QStringLiteral("btnVideoSeltoCanny"));
         btnVideoSeltoCanny->setEnabled(true);
-        btnVideoSeltoCanny->setFont(font7);
+        btnVideoSeltoCanny->setFont(font2);
 
         horizontalLayout_2->addWidget(btnVideoSeltoCanny);
 
@@ -499,11 +522,11 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1208, 28));
-        menuBar->setFont(font7);
+        menuBar->setGeometry(QRect(0, 0, 1246, 26));
+        menuBar->setFont(font2);
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
-        menu->setFont(font7);
+        menu->setFont(font1);
         menu_2 = new QMenu(menuBar);
         menu_2->setObjectName(QStringLiteral("menu_2"));
         menu_2->setEnabled(true);
@@ -512,25 +535,41 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(menu_2->sizePolicy().hasHeightForWidth());
         menu_2->setSizePolicy(sizePolicy);
-        menu_2->setFont(font7);
+        menu_2->setFont(font2);
         menu_3 = new QMenu(menuBar);
         menu_3->setObjectName(QStringLiteral("menu_3"));
-        menu_3->setFont(font7);
+        menu_3->setFont(font2);
+        menu_4 = new QMenu(menuBar);
+        menu_4->setObjectName(QStringLiteral("menu_4"));
+        menu_4->setFont(font2);
+        menu_5 = new QMenu(menu_4);
+        menu_5->setObjectName(QStringLiteral("menu_5"));
+        menu_5->setFont(font2);
+        menu_6 = new QMenu(menu_4);
+        menu_6->setObjectName(QStringLiteral("menu_6"));
+        menu_6->setFont(font2);
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        mainToolBar->setFont(font7);
+        mainToolBar->setFont(font2);
         MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
+        statusBar->setFont(font2);
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menu->menuAction());
         menuBar->addAction(menu_2->menuAction());
         menuBar->addAction(menu_3->menuAction());
+        menuBar->addAction(menu_4->menuAction());
         menu->addAction(action_upload_set);
         menu_2->addAction(actio_video_set);
         menu_3->addAction(action_about);
+        menu_4->addAction(menu_5->menuAction());
+        menu_4->addAction(menu_6->menuAction());
+        menu_5->addAction(actionchinese);
+        menu_5->addAction(actionEnglish);
+        menu_6->addAction(actionShowDetail);
 
         retranslateUi(MainWindow);
 
@@ -553,16 +592,14 @@ public:
 #endif // QT_NO_TOOLTIP
         action_upload_set->setText(QApplication::translate("MainWindow", "\350\250\255\345\256\232", Q_NULLPTR));
         actio_video_set->setText(QApplication::translate("MainWindow", "\350\250\255\345\256\232", Q_NULLPTR));
+        actionchinese->setText(QApplication::translate("MainWindow", "\344\270\255\346\226\207", Q_NULLPTR));
+        actionEnglish->setText(QApplication::translate("MainWindow", "English", Q_NULLPTR));
+        actionShowDetail->setText(QApplication::translate("MainWindow", "\351\241\257\347\244\272\344\270\212\345\202\263\347\255\206\346\225\270", Q_NULLPTR));
         label->setText(QApplication::translate("MainWindow", "\346\224\235\345\275\261\346\251\237\351\201\270\345\226\256", Q_NULLPTR));
         btnRefresh->setText(QApplication::translate("MainWindow", "refresh", Q_NULLPTR));
         btnEditCamName->setText(QApplication::translate("MainWindow", "\344\277\256\346\224\271\347\233\270\346\251\237\345\220\215", Q_NULLPTR));
         right_label->setText(QApplication::translate("MainWindow", "TextLabel", Q_NULLPTR));
         label_2->setText(QApplication::translate("MainWindow", "No", Q_NULLPTR));
-        textEdit_testerNo->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Arial'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'\345\276\256\350\273\237\346\255\243\351\273\221\351\253\224'; font-size:12pt;\"><br /></p></body></html>", Q_NULLPTR));
         btnBuildTester->setText(QApplication::translate("MainWindow", "\345\273\272\347\253\213\346\226\260\346\216\241\346\250\243\346\270\254\350\251\246", Q_NULLPTR));
         btnCameraStart_r->setText(QApplication::translate("MainWindow", "\346\223\267\345\217\226\345\217\263\347\234\274\345\275\261\345\203\217", Q_NULLPTR));
         btnCameraStart_l->setText(QApplication::translate("MainWindow", "\346\223\267\345\217\226\345\267\246\347\234\274\345\275\261\345\203\217", Q_NULLPTR));
@@ -583,6 +620,9 @@ public:
         menu->setTitle(QApplication::translate("MainWindow", "\344\270\212\345\202\263\350\250\255\345\256\232", Q_NULLPTR));
         menu_2->setTitle(QApplication::translate("MainWindow", "\345\275\261\347\211\207\346\240\274\345\274\217", Q_NULLPTR));
         menu_3->setTitle(QApplication::translate("MainWindow", "\350\252\252\346\230\216", Q_NULLPTR));
+        menu_4->setTitle(QApplication::translate("MainWindow", "\345\205\266\344\273\226\350\250\255\345\256\232", Q_NULLPTR));
+        menu_5->setTitle(QApplication::translate("MainWindow", "\350\252\236\350\250\200", Q_NULLPTR));
+        menu_6->setTitle(QApplication::translate("MainWindow", "\346\225\270\346\223\232", Q_NULLPTR));
     } // retranslateUi
 
 };

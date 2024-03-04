@@ -95,7 +95,7 @@ public:
         palette.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush);
         processForm->setPalette(palette);
         QFont font;
-        font.setFamily(QString::fromUtf8("\345\276\256\350\273\237\346\255\243\351\273\221\351\253\224"));
+        font.setFamily(QStringLiteral("Segoe UI Black"));
         font.setPointSize(14);
         font.setBold(true);
         font.setWeight(75);

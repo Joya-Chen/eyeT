@@ -59,31 +59,38 @@ public:
         if (SettingForm->objectName().isEmpty())
             SettingForm->setObjectName(QStringLiteral("SettingForm"));
         SettingForm->setWindowModality(Qt::NonModal);
-        SettingForm->resize(654, 270);
+        SettingForm->resize(654, 307);
         QFont font;
-        font.setFamily(QString::fromUtf8("\345\276\256\350\273\237\346\255\243\351\273\221\351\253\224"));
-        font.setPointSize(10);
+        font.setFamily(QStringLiteral("Segoe UI"));
+        font.setPointSize(9);
         SettingForm->setFont(font);
         verticalLayout_3 = new QVBoxLayout(SettingForm);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         groupBox_2 = new QGroupBox(SettingForm);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
+        QFont font1;
+        font1.setFamily(QStringLiteral("Microsoft JhengHei UI"));
+        font1.setPointSize(9);
+        groupBox_2->setFont(font1);
         verticalLayout = new QVBoxLayout(groupBox_2);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         label = new QLabel(groupBox_2);
         label->setObjectName(QStringLiteral("label"));
+        label->setFont(font1);
 
         horizontalLayout->addWidget(label);
 
         lineEdit_server = new QLineEdit(groupBox_2);
         lineEdit_server->setObjectName(QStringLiteral("lineEdit_server"));
+        lineEdit_server->setFont(font);
 
         horizontalLayout->addWidget(lineEdit_server);
 
         btn_editServerURL = new QPushButton(groupBox_2);
         btn_editServerURL->setObjectName(QStringLiteral("btn_editServerURL"));
+        btn_editServerURL->setFont(font1);
 
         horizontalLayout->addWidget(btn_editServerURL);
 
@@ -94,17 +101,20 @@ public:
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         label_2 = new QLabel(groupBox_2);
         label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setFont(font1);
 
         horizontalLayout_2->addWidget(label_2);
 
         lineEdit_pwd = new QLineEdit(groupBox_2);
         lineEdit_pwd->setObjectName(QStringLiteral("lineEdit_pwd"));
+        lineEdit_pwd->setFont(font);
         lineEdit_pwd->setEchoMode(QLineEdit::Password);
 
         horizontalLayout_2->addWidget(lineEdit_pwd);
 
         btn_editPwd = new QPushButton(groupBox_2);
         btn_editPwd->setObjectName(QStringLiteral("btn_editPwd"));
+        btn_editPwd->setFont(font1);
 
         horizontalLayout_2->addWidget(btn_editPwd);
 
@@ -115,16 +125,19 @@ public:
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         label_3 = new QLabel(groupBox_2);
         label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setFont(font1);
 
         horizontalLayout_3->addWidget(label_3);
 
         lineEdit_param = new QLineEdit(groupBox_2);
         lineEdit_param->setObjectName(QStringLiteral("lineEdit_param"));
+        lineEdit_param->setFont(font);
 
         horizontalLayout_3->addWidget(lineEdit_param);
 
         btn_editParam = new QPushButton(groupBox_2);
         btn_editParam->setObjectName(QStringLiteral("btn_editParam"));
+        btn_editParam->setFont(font1);
 
         horizontalLayout_3->addWidget(btn_editParam);
 
@@ -136,22 +149,26 @@ public:
 
         groupBox = new QGroupBox(SettingForm);
         groupBox->setObjectName(QStringLiteral("groupBox"));
+        groupBox->setFont(font1);
         verticalLayout_2 = new QVBoxLayout(groupBox);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
         label_4 = new QLabel(groupBox);
         label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setFont(font1);
 
         horizontalLayout_4->addWidget(label_4);
 
         lineEdit_timeout = new QLineEdit(groupBox);
         lineEdit_timeout->setObjectName(QStringLiteral("lineEdit_timeout"));
+        lineEdit_timeout->setFont(font);
 
         horizontalLayout_4->addWidget(lineEdit_timeout);
 
         btn_editTimeout = new QPushButton(groupBox);
         btn_editTimeout->setObjectName(QStringLiteral("btn_editTimeout"));
+        btn_editTimeout->setFont(font1);
 
         horizontalLayout_4->addWidget(btn_editTimeout);
 
@@ -173,6 +190,7 @@ public:
 
         btn_closeSet = new QPushButton(SettingForm);
         btn_closeSet->setObjectName(QStringLiteral("btn_closeSet"));
+        btn_closeSet->setFont(font1);
 
         horizontalLayout_5->addWidget(btn_closeSet);
 

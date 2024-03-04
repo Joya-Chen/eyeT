@@ -64,6 +64,21 @@ int videoParam::getBiterate()
     return m_biterate;
 }
 
+void videoParam::changeEvent(QEvent *e)
+{
+    QWidget::changeEvent(e);
+        switch (e->type())
+        {
+           case QEvent::LanguageChange:
+                qDebug()<<"videoParam::LanguageChange";
+                //ui->retranslateUi(this);
+                //還有其他手工更新界面的內容
+            break;
+           default:
+            break;
+        }
+}
+
 void videoParam::setFileCode(QString file_Code)
 {
     m_video_format = file_Code;

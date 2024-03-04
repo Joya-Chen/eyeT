@@ -16,6 +16,8 @@ TEMPLATE = app
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+#DEFINES += QT_NO_CAST_FROM_ASCII
+VERSION += 2024.02.29.18
 #-------------------------------------------
 DEFINES += SELF_TEST
 # You can also make your code fail to compile if you use deprecated APIs.
@@ -32,7 +34,8 @@ SOURCES += main.cpp\
     dialog.cpp \
     settingform.cpp \
     videoparam.cpp \
-    processform.cpp
+    processform.cpp \
+    cls_global.cpp
 
 HEADERS  += mainwindow.h \
     frameHandler/frameutility.h \
@@ -41,13 +44,18 @@ HEADERS  += mainwindow.h \
     dialog.h \
     settingform.h \
     videoparam.h \
-    processform.h
+    processform.h \
+    cls_global.h
 
 FORMS    += mainwindow.ui \
     dialog.ui \
     settingform.ui \
     videoparam.ui \
     processform.ui
+
+TRANSLATIONS += \
+    Language/eyeT_zh_TW.ts\
+    Language/eyeT_en.ts
 
 INCLUDEPATH += C:\opencv\build\include
 LIBS += C:\opencv\opencv-build\bin\opencv_videoio_ffmpeg481.dll
@@ -78,7 +86,9 @@ DISTFILES += \
     release/TEST_2param.py \
     release/ROI.py \
     release/ADJUST.py \
-    release/TRACKING.py
+    release/TRACKING.py \
+    Language/eyeT_en.ts \
+    Language/eyeT_zh_TW.ts
 
 RESOURCES += \
     icon.qrc

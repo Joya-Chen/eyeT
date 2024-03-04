@@ -90,7 +90,7 @@ public slots:
     {
         m_transReturnText = m_uploadCtrl->removeBlink(src, eyeSide, format).simplified();
         qDebug()<<"removeblink path:"<<m_transReturnText;
-        m_transReturnText = m_uploadCtrl->trackingROIandsave(m_transReturnText);
+        m_transReturnText = m_uploadCtrl->trackingROIandsave(m_transReturnText,"false");
 
         emit finished();
     }

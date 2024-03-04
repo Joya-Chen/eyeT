@@ -17,6 +17,9 @@ public:
 
     void setDefault(QString url, QString pwd, QString dataInfo, int timeout);
 
+protected:
+    void changeEvent(QEvent *e) override;
+
 signals:
     void paramUpdate(QString url, QString pwd, QString dataInfo, int timeout);
 

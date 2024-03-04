@@ -33,14 +33,19 @@ public:
             Dialog->setObjectName(QStringLiteral("Dialog"));
         Dialog->resize(431, 276);
         QFont font;
-        font.setFamily(QString::fromUtf8("\345\276\256\350\273\237\346\255\243\351\273\221\351\253\224"));
-        font.setPointSize(10);
+        font.setFamily(QStringLiteral("Segoe UI"));
+        font.setPointSize(9);
         font.setStyleStrategy(QFont::PreferAntialias);
         Dialog->setFont(font);
         Dialog->setContextMenuPolicy(Qt::DefaultContextMenu);
         btn_ok = new QPushButton(Dialog);
         btn_ok->setObjectName(QStringLiteral("btn_ok"));
         btn_ok->setGeometry(QRect(340, 219, 80, 41));
+        QFont font1;
+        font1.setFamily(QStringLiteral("Microsoft JhengHei UI"));
+        font1.setPointSize(9);
+        font1.setStyleStrategy(QFont::PreferAntialias);
+        btn_ok->setFont(font1);
         label = new QLabel(Dialog);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(10, 20, 311, 51));
@@ -48,6 +53,7 @@ public:
         label_version = new QLabel(Dialog);
         label_version->setObjectName(QStringLiteral("label_version"));
         label_version->setGeometry(QRect(20, 90, 391, 111));
+        label_version->setFont(font1);
 
         retranslateUi(Dialog);
 
