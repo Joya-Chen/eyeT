@@ -573,7 +573,9 @@ QString uploadUtility::removeBlink(QString src, QString eyeSide, QString format)
 
         arguments << src << eyeSide << format ;
 
-        QString program = QDir::currentPath().append("/firstAdjust-all.exe");
+        //2024.04.24加入ROI偵測，改寫去除眨眼
+        //QString program = QDir::currentPath().append("/firstAdjust-all.exe");
+        QString program = QDir::currentPath().append("/remove_blink.exe");
 
         QString result = this->executeProcess(program,arguments);
 
@@ -604,9 +606,16 @@ QString uploadUtility::trackingROIandsave(QString src, QString autoROI) //return
 
         QStringList arguments;
 
-        arguments << src << eyeSide << format << autoROI <<"" ;
+        QString program ;
 
-        QString program = QDir::currentPath().append("/tracking.exe");
+        if(autoROI == "false"){
+            arguments << src << eyeSide << format << autoROI <<"" ;
+            program = QDir::currentPath().append("/tracking.exe");
+        }
+        else{
+            arguments << src ;
+            program = QDir::currentPath().append("/socket_client.exe");
+        }
 
         qDebug()<<arguments;
 
@@ -928,6 +937,7 @@ QString uploadUtility::doDataCalculation(QList<EYEData> data)
         for (int i = 0; i < 3; i++) {
             glu.removeLast();
         }
+        //刪除最小一筆
         glu.removeFirst();
 
 
@@ -1072,7 +1082,7 @@ QString uploadUtility::doDataCalculation(QList<EYEData> data)
         }
         bpv0.removeAll(0);
 
-        // 计算剩下数值的平均值
+        // 計算剩下值的平均值
         sum = 0;
         for (int i : bpv0) {
             sum += i;
@@ -1102,7 +1112,7 @@ QString uploadUtility::doDataCalculation(QList<EYEData> data)
 
         bpv1.removeAll(0);
 
-        // 计算剩下数值的平均值
+        // 計算剩下值的平均值
         sum = 0;
         for (int i : bpv1) {
             sum += i;
@@ -1112,12 +1122,14 @@ QString uploadUtility::doDataCalculation(QList<EYEData> data)
         qDebug() << sum <<"/"<<bpv1.size() <<"="<<newAverageBpv1;
         qDebug() << "剔除後newAveragebpv1的平均值:" << newAverageBpv1;
         //-----------------------------------------------------------------------
+        //確認大於此平均數的20%之數值去掉及小於此平均數5%去掉後還有數列可計算
         finalCount = glu.size();
         for (int i = 0; i < glu.size(); i++) {
             if (glu[i] > averageGlu * 1.2 || glu[i] < averageGlu * 0.9) {
                 finalCount --;
             }
         }
+        //有值才剃除
         if(finalCount >0){
 
             for (int i = 0; i < glu.size(); i++) {
@@ -1133,7 +1145,7 @@ QString uploadUtility::doDataCalculation(QList<EYEData> data)
 
         glu.removeAll(0);
 
-        // 计算剩下数值的平均值
+        // 計算剩下值的平均值
         sum = 0;
         for (int i : glu) {
             sum += i;
@@ -1151,7 +1163,7 @@ QString uploadUtility::doDataCalculation(QList<EYEData> data)
                 .arg(QString(tr("收縮壓:%5")).arg(newAverageBpv1))
                 .arg(QString(tr("血糖值:%6")).arg(newAverageGlu));
     }
-    else if(dataSize > 4 && dataSize < 14 )
+    else if(dataSize > 4 && dataSize < 12 )
     {
         // 刪除最大和最小兩筆
         for (int i = 0; i < 1; i++) {

@@ -47,15 +47,15 @@ int main(int argc, char *argv[])
     CLS_GLOBAL::translator->load("./Language/eyeT_en.qm");
     a.installTranslator(CLS_GLOBAL::translator);
 
-    MainWindow w;
+    MainWindow *w = new MainWindow();
 
     //QFont font("Roboto",9);
 
     //w.setFont(font);
 
-    w.setAttribute(Qt::WA_DeleteOnClose);
+    w->setAttribute(Qt::WA_DeleteOnClose);
 
-    w.show();
+    w->show();
 
     a.setWindowIcon(QIcon("./deepicon.png"));
 

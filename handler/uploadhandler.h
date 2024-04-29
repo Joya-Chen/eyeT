@@ -88,9 +88,21 @@ public slots:
 
     void autoProcessVideo(QString src, QString eyeSide, QString format)
     {
+
         m_transReturnText = m_uploadCtrl->removeBlink(src, eyeSide, format).simplified();
+
+        QString removeblink_path = m_transReturnText;
         qDebug()<<"removeblink path:"<<m_transReturnText;
-        m_transReturnText = m_uploadCtrl->trackingROIandsave(m_transReturnText,"false");
+
+        if(eyeSide == "right")
+            m_transReturnText = m_uploadCtrl->trackingROIandsave(removeblink_path,"false");
+        else
+            m_transReturnText = m_uploadCtrl->trackingROIandsave(m_transReturnText);
+
+        if(m_transReturnText.trimmed().simplified() == "-2"){
+            qDebug()<<"trackingROI fail, start manual tracking...";
+            m_transReturnText = m_uploadCtrl->trackingROIandsave(removeblink_path,"false");
+        }
 
         emit finished();
     }

@@ -19,7 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_NO_CAST_FROM_ASCII
 VERSION += 2024.02.29.18
 #-------------------------------------------
-DEFINES += SELF_TEST
+#DEFINES += SELF_TEST
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.

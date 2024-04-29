@@ -129,7 +129,6 @@ private:
 
     void initMenu();
     void initialElementState();
-    void setConfig();
     void startToSaveVideo();
     void disableAllBtn();
     void enableAllBtn();
@@ -161,7 +160,6 @@ public slots:
     void saveLVideoEnd();
     void setCountdownText();
     void uploadDone();
-    void uploadProgress(qint64 bytesSent, qint64 bytesTotal);
     void updateSettingParam(QString url, QString pwd, QString dataInfo, int timeout);
     void updateVideoSettingParam(QString format, int expose_value, int biterate);
 

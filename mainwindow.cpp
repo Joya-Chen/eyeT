@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->loadVConfigAndSet();
 
-    m_version = "v2024.02.29.18";
+    m_version = "v2024.04.25.19";
 
     m_releaseNote = QString::fromUtf8("");
 
@@ -107,7 +107,7 @@ bool MainWindow::openCamera(int cameraIndex)
 
     m_timer->start(10);
 
-
+    return true;
 
 }
 int MainWindow::detectCameraCount(){
@@ -165,6 +165,8 @@ bool MainWindow::doExVideo(int bitrate_M,QString vPath, QString &oPath)
     }
 
     this->updateBitrate(bitrate_M, vPath, oPath);
+
+    return true;
 }
 
 QString MainWindow::getVersion()
@@ -194,53 +196,6 @@ void MainWindow::processFrameAndUpdateGUI()
 
     if(mat_original_frame.empty() == true)  return;
 
-    //cvtColor(mat_original_frame,mat_processed_frame, COLOR_BGR2RGB);
-
-
-
-    /*      CascadeClassifier eye_cascade("./haarcascade_eye.xml") ;//  使用眼睛模型
-
-        if(eye_cascade.empty()==true){
-            ui->txtShow->appendPlainText("error:load eye_cascade fail.");
-        }
-        */
-
-    //qDebug()<<"4";
-    /*
-    try{
-    eye_cascade.detectMultiScale(mat_processed_frame,eye_rects );// 偵測眼睛
-    }
-    catch(const Exception& e)
-    {
-         qDebug() << "detectMultiScale error: "  << e.what() << endl, 1;
-    }
-
-    qDebug()<<"4";
-    for (auto rect : eye_rects)
-    {
-        qDebug()<<"5";
-        rectangle(mat_original_frame,rect,{0,0,255},2);
-
-    }
-
-    qDebug()<<"3";
-*/
-    /*
-    inRange(mat_original_frame, Scalar(0,0,175), Scalar(100,100,256), mat_processed_frame);
-    GaussianBlur(mat_processed_frame,mat_processed_frame,Size(9,9),1.5);
-    HoughCircles(mat_processed_frame,vec_circles, HOUGH_GRADIENT,2,mat_processed_frame.rows/4,100,50,10,400);
-
-    for(itr_circles = vec_circles.begin(); itr_circles!=vec_circles.end();itr_circles ++){
-        ui->txtShow->appendPlainText(QString("ball position = ")+QString::number((*itr_circles)[0]).rightJustified(4,' ')+
-                                     QString(", y =")+QString::number((*itr_circles)[1]).rightJustified(4,' ') +
-                                     QString(", radius =")+QString::number((*itr_circles)[2],'f',3).rightJustified(7,' '));
-
-        circle(mat_original_frame,Point((int)(*itr_circles)[0],(int)(*itr_circles)[1]),3,Scalar(0,255,0),FILLED);
-        circle(mat_original_frame,Point((int)(*itr_circles)[0],(int)(*itr_circles)[1]),(int)(*itr_circles)[2],Scalar(0,0,255),3);
-    }
-
-    */
-
     if(recordingType)
     {
 
@@ -248,18 +203,9 @@ void MainWindow::processFrameAndUpdateGUI()
     }
 
     QImage qimg_original(mat_original_frame.data,mat_original_frame.cols,mat_original_frame.rows,mat_original_frame.step,QImage::Format_RGB888);
-    //QImage qimg_processed(mat_processed_frame.data,mat_processed_frame.cols,mat_processed_frame.rows,mat_processed_frame.step,QImage::Format_Indexed8);
-    QImage qimg_processed(mat_processed_frame.data,mat_processed_frame.cols,mat_processed_frame.rows,mat_processed_frame.step,QImage::Format_Alpha8);
 
     ui->right_label->setPixmap(QPixmap::fromImage(qimg_original.rgbSwapped()));
-    //ui->right_label->setPixmap(QPixmap::fromImage(qimg_original));
-    //ui->left_label->setPixmap(QPixmap::fromImage(qimg_processed));
 
-
-
-    //  cap_Beam_Cam.release();
-
-    //  videoOut.release();
 
 }
 void MainWindow::saveVideoEnd(){
@@ -485,10 +431,6 @@ void MainWindow::uploadDone()
                                  "\"bpv1\":\"122\"");
 }
 
-void MainWindow::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
-{
-
-}
 
 void MainWindow::updateSettingParam(QString url, QString pwd, QString dataInfo, int timeout)
 {
@@ -677,17 +619,6 @@ void MainWindow::initialElementState()
     ui->label_version->setText(this->getVersion());
 
     ui->btnVideoSelUpload->setEnabled(true);
-
-}
-
-void MainWindow::setConfig(){
-    QString serverUrl ;
-    int timeout ;
-    QString pwd;
-    QString param ;
-
-
-
 
 }
 
@@ -908,6 +839,7 @@ int MainWindow::deleteFile(QString filePath)
 
 void MainWindow::updateBitrate(int bitrate_M,QString vPath, QString &oPath)
 {
+    qDebug()<<"bitrate_M:"<<bitrate_M;
     //first check file size
 
     QString filePath = vPath;
@@ -1382,15 +1314,18 @@ void MainWindow::on_btnBuildTester_clicked()
 
     QDir testerDir = QString(QDir::currentPath() +"//" + m_todayFolder );
 
-    if(name_No == ""){
+    if(name_No.trimmed() == ""){
+
         QStringList filter;
+
         QFileInfoList fileInfoList = testerDir.entryInfoList(filter);
+
         int count = fileInfoList.count() ;
 
         m_testerData.m_NameNo = QString::number(count+1);
     }
     else
-        m_testerData.m_NameNo = name_No ;
+        m_testerData.m_NameNo = name_No.trimmed() ;
 
     m_testerData.m_testerPath = QString(QDir::currentPath()+"/"+m_todayFolder+"/"+m_testerData.m_NameNo);
 
@@ -1399,6 +1334,12 @@ void MainWindow::on_btnBuildTester_clicked()
         ui->txtShow->appendPlainText(QString(tr("已建立No %1資料夾").arg(m_testerData.m_NameNo)));
 
     }
+    else
+    {
+        QMessageBox::information(this,tr("Warning"),tr("測試者資料夾建立失敗，請確認是否有特殊字元。\\ *"),QMessageBox::Ok);
+        return ;
+    }
+
 
     ui->textEdit_testerNo->setText(m_testerData.m_NameNo);
 
